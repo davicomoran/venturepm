@@ -1,0 +1,153 @@
+# VenturePM
+
+**The open-source AI operating system for Venture Client and Venture Building programs.**
+
+---
+
+VenturePM is a structured methodology, vocabulary, and toolset for running corporate innovation programs — operated through Claude as an AI co-pilot. It manages pipeline state, surfaces blockers, tracks decisions, and guides program managers through every phase.
+
+It is built for innovation units, venture studios, accelerators, and any organization that systematically works with startups or builds new ventures internally. No vendor lock-in. No proprietary platform. Just structured files, standard commands, and a co-pilot that knows the methodology.
+
+---
+
+## Why VenturePM
+
+Most innovation programs fail not because of bad ideas — but because of poor execution infrastructure. Teams manage pipelines in spreadsheets, track decisions in email threads, and lose institutional knowledge every time someone leaves.
+
+Existing tools are either too generic (project management software adapted for innovation) or too opinionated (proprietary platforms that lock you into their process). Neither gives you a methodology-native operating layer that grows with your program.
+
+VenturePM is different:
+
+- **Methodology-first.** Built around the Venture Client model and Venture Building principles. The process is the product.
+- **File-native.** Program state lives in Markdown files you own, version, and audit. No database, no SaaS dependency.
+- **AI-operated.** Claude reads your program context, applies the methodology, and takes structured action — not just chat.
+- **Open.** Fork it, extend it, adapt it. The OS belongs to whoever runs it.
+
+---
+
+## How it works
+
+VenturePM has three components that work together:
+
+### 1. `CLAUDE.md` — the brain
+
+The operating manual. It defines the methodology, vocabulary, hierarchy, pipeline phases, blocker taxonomy, and all behavioral rules. Claude reads this at the start of every session and operates within it. You never re-explain the methodology — it's always there.
+
+### 2. `/vpm-` commands — the actions
+
+Structured commands that drive the program forward. Each command maps to a phase of the pipeline: setting up a program, running a challenge workshop, scouting solvers, evaluating fit, launching pilots, diagnosing blockers, generating reports. Commands are deterministic — they follow defined steps, produce defined outputs, and write results to the right files.
+
+### 3. `programs/` — the living memory
+
+One folder per entity. Every program, batch, organization, unit, challenge, solver, pilot, blocker, and decision lives here as a Markdown file. Claude reads these files to understand current state. When you run a command, the output is written back to the filesystem. The program memory grows with every session.
+
+---
+
+## Quick start
+
+**Requirements:** [Claude Code](https://claude.ai/code) with file access enabled.
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/davicomoran/venturepm.git
+cd venturepm
+
+# 2. Open the project in Claude Code
+claude .
+
+# 3. Initialize your session
+/vpm-init
+
+# 4. Set up your first program
+/vpm-setup-program
+
+# 5. Start running the pipeline
+/vpm-org-setup
+/vpm-challenge-workshop
+/vpm-scout
+```
+
+That's it. VenturePM will guide you through the rest.
+
+---
+
+## Command reference
+
+All commands use the `/vpm-` prefix.
+
+| Command | Phase | Description |
+|---|---|---|
+| `/vpm-init` | Any | Initialize session. Display dashboard with OS health and program pipeline status. |
+| `/vpm-setup-program` | Setup | Initialize a new program: collect details, create folder structure, generate `program-context.md`. |
+| `/vpm-import-program` | Setup | Load program context from an existing document. Extracts structured fields and generates file structure. |
+| `/vpm-org-setup` | Setup | Onboard a new organization into an active program and generate a full organization profile. |
+| `/vpm-challenge-workshop` | Challenges | Facilitate challenge identification, classification by innovation horizon, and prioritization by feasibility × impact. |
+| `/vpm-scout` | Scouting | Source and evaluate solvers for a challenge. Generates structured profiles with fit assessment. |
+| `/vpm-fit-check` | Evaluation | Evaluate solver-challenge fit across strategic, technical, and operational-cultural dimensions. Output: scored assessment with recommendation. |
+| `/vpm-pilot-launch` | Pilots | Co-design a pilot. Generates a complete pilot design document with KPIs, timeline, responsibilities, and escalation conditions. |
+| `/vpm-blocker-check` | Any | Diagnose why something is stalled. Classifies blocker type, assesses severity, assigns owner, recommends next steps. |
+| `/vpm-report` | Any | Generate a periodic executive report. Summarizes pipeline status, advances, blockers, decisions, and next steps. |
+| `/vpm-new-command` | OS | Create a new VenturePM command with standard structure and register it in `CLAUDE.md`. |
+
+---
+
+## Program hierarchy
+
+VenturePM organizes programs using a four-level hierarchy. `program` and `organization` are required. `batch` and `unit` are optional.
+
+```
+program
+└── batch (optional)
+    └── organization
+        └── unit (optional)
+```
+
+| Level | Required | Description |
+|---|---|---|
+| `program` | Yes | The top-level innovation initiative. Has no parent. |
+| `batch` | No | A specific cohort or instance of a program. Inherits from the parent program but can override its own parameters. |
+| `organization` | Yes | A company or entity participating in the program — as a solver, partner, or internal team. |
+| `unit` | No | A sub-team or business unit within an organization that owns specific challenges. |
+
+Challenges are always assigned to the lowest active level in the hierarchy.
+
+---
+
+## Roadmap
+
+**Current focus**
+
+- Templates for all entity types (`program`, `challenge`, `solver`, `pilot`, `blocker`, `decision`)
+- Methodology documentation in `docs/`
+
+**Future**
+
+The roadmap beyond the current focus is intentionally undefined. VenturePM's direction should be shaped by the people running real programs on it — not by assumptions made in advance.
+
+Have ideas? [Open an issue](https://github.com/davicomoran/venturepm/issues) or [start a discussion](https://github.com/davicomoran/venturepm/discussions). The best features will come from operators who use it.
+
+---
+
+## Contributing
+
+VenturePM is open source and welcomes contributions at every level:
+
+- **Methodology:** Improve the operating principles, phase definitions, or blocker taxonomy.
+- **Commands:** Propose or build new `/vpm-` commands for gaps in the pipeline.
+- **Templates:** Help define the standard structure for entity files.
+- **Documentation:** Clarify the guides and make the methodology more accessible.
+- **Case studies:** Share how you've used VenturePM in a real program (anonymized is fine).
+
+To contribute: fork the repo, make your changes, and open a pull request with a clear description of what you changed and why.
+
+---
+
+## Author
+
+**David Mora** — [github.com/davicomoran](https://github.com/davicomoran)
+
+---
+
+## License
+
+MIT — use it, fork it, build on it.
