@@ -58,11 +58,13 @@ claude .
 # 3. Initialize your session
 /vpm-init
 
-# 4. Set up your first program
+# 4. Set up your program structure
 /vpm-setup-program
+/vpm-setup-batch        # optional — if your program runs cohorts
+/vpm-setup-org
+/vpm-setup-unit         # optional — if the org has sub-teams
 
 # 5. Start running the pipeline
-/vpm-org-setup
 /vpm-challenge-workshop
 /vpm-scout
 ```
@@ -78,13 +80,14 @@ All commands use the `/vpm-` prefix.
 | Command | Phase | Description |
 |---|---|---|
 | `/vpm-init` | Any | Initialize session. Display dashboard with OS health and program pipeline status. |
-| `/vpm-setup-program` | Setup | Initialize a new program: collect details, create folder structure, generate `program-context.md`. |
-| `/vpm-import-program` | Setup | Load program context from an existing document. Extracts structured fields and generates file structure. |
-| `/vpm-org-setup` | Setup | Onboard a new organization into an active program and generate a full organization profile. |
-| `/vpm-challenge-workshop` | Challenges | Facilitate challenge identification, classification by innovation horizon, and prioritization by feasibility × impact. |
-| `/vpm-scout` | Scouting | Source and evaluate solvers for a challenge. Generates structured profiles with fit assessment. |
-| `/vpm-fit-check` | Evaluation | Evaluate solver-challenge fit across strategic, technical, and operational-cultural dimensions. Output: scored assessment with recommendation. |
-| `/vpm-pilot-launch` | Pilots | Co-design a pilot. Generates a complete pilot design document with KPIs, timeline, responsibilities, and escalation conditions. |
+| `/vpm-setup-program` | Setup | Initialize a new program. Supports manual entry, document import, or web search. Creates `program-context.md`. |
+| `/vpm-setup-batch` | Setup | Set up a cohort within a program. Creates `batch-context.md`. |
+| `/vpm-setup-org` | Setup | Onboard an organization into a program or batch. Registers it in `batch-context.md` and creates the full org folder structure. |
+| `/vpm-setup-unit` | Setup | Set up a sub-team or business unit within an organization. Creates operational subdirectories at the unit level. |
+| `/vpm-challenge-workshop` | Challenges | Facilitate challenge identification and prioritization. Supports interactive workshop (Mode A) or document import (Mode B — PDF, Miro export, plain text). Updates org context with active challenges. |
+| `/vpm-scout` | Scouting | Source and evaluate solvers for a challenge. Generates structured profiles with fit assessment. Advances challenge status to `in-evaluation`. |
+| `/vpm-fit-check` | Evaluation | Evaluate solver-challenge fit across strategic, technical, and operational-cultural dimensions. Output: scored assessment with recommendation (Advance / Conditional / Reject). |
+| `/vpm-pilot-launch` | Pilots | Co-design a pilot. Generates a complete pilot design document with KPIs, timeline, responsibilities, and escalation conditions. Advances challenge status to `in-pilot`. |
 | `/vpm-blocker-check` | Any | Diagnose why something is stalled. Classifies blocker type, assesses severity, assigns owner, recommends next steps. |
 | `/vpm-report` | Any | Generate a periodic executive report. Summarizes pipeline status, advances, blockers, decisions, and next steps. |
 | `/vpm-new-command` | OS | Create a new VenturePM command with standard structure and register it in `CLAUDE.md`. |
@@ -106,7 +109,7 @@ program
 |---|---|---|
 | `program` | Yes | The top-level innovation initiative. Has no parent. |
 | `batch` | No | A specific cohort or instance of a program. Inherits from the parent program but can override its own parameters. |
-| `organization` | Yes | A company or entity participating in the program — as a solver, partner, or internal team. |
+| `organization` | Yes | The challenger entity — a company, cooperative, NGO, or any organization that defines challenges and evaluates solvers. Always the problem owner, never the solution provider. |
 | `unit` | No | A sub-team or business unit within an organization that owns specific challenges. |
 
 Challenges are always assigned to the lowest active level in the hierarchy.
@@ -117,7 +120,8 @@ Challenges are always assigned to the lowest active level in the hierarchy.
 
 **Current focus**
 
-- Templates for all entity types (`program`, `challenge`, `solver`, `pilot`, `blocker`, `decision`)
+- End-to-end pipeline tracking: challenge status auto-advances through `active → in-evaluation → in-pilot → closed` as commands are run
+- Cross-entity linking: batch-context lists orgs, org-context lists active challenges, challenge files link solvers and pilots
 - Methodology documentation in `docs/`
 
 **Future**
