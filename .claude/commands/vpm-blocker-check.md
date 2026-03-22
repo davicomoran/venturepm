@@ -12,15 +12,25 @@ Ask the operator for the following in a single message:
 To diagnose a blocker, please provide:
 
 1. Program slug
-   The slug of the active program.
    Example: global-innovation-sprint
 
-2. Initiative type and slug
+2. Batch slug (optional)
+   Leave blank if the organization is directly under the program.
+   Example: cohort-2026-q1
+
+3. Organization slug
+   Example: acme-logistics-corp
+
+4. Unit slug (optional)
+   Leave blank if the initiative belongs to the organization directly.
+   Example: last-mile-operations
+
+5. Initiative type and slug
    What is blocked, and what is its slug?
    Type: challenge / solver / pilot
    Example: pilot / bringg-technologies-last-mile-visibility-pilot
 
-3. Current status description
+6. Current status description
    What is happening (or not happening)?
    Be as specific as possible — describe the symptom, who is involved, and how long it has been blocked.
    Example: "The IT security team has not responded to the data access request sent 3 weeks ago.
@@ -31,16 +41,25 @@ Wait for the operator's response before proceeding.
 
 ---
 
-## Step 2 — Validate inputs
+## Step 2 — Resolve owner folder and validate
 
-Determine the file path from the initiative type:
-- `challenge` → `programs/[program-slug]/challenges/[initiative-slug].md`
-- `solver` → `programs/[program-slug]/solvers/[initiative-slug].md`
-- `pilot` → `programs/[program-slug]/pilots/[initiative-slug].md`
+Derive the owner folder path from the inputs:
+
+| Inputs | Owner folder |
+|---|---|
+| program only | `programs/[program-slug]/orgs/[org-slug]/` |
+| program + batch | `programs/[program-slug]/batches/[batch-slug]/orgs/[org-slug]/` |
+| program + org + unit | `programs/[program-slug]/orgs/[org-slug]/units/[unit-slug]/` |
+| program + batch + org + unit | `programs/[program-slug]/batches/[batch-slug]/orgs/[org-slug]/units/[unit-slug]/` |
+
+Determine the initiative file path from the initiative type:
+- `challenge` → `[owner-folder]/challenges/[initiative-slug].md`
+- `solver` → `[owner-folder]/solvers/[initiative-slug].md`
+- `pilot` → `[owner-folder]/pilots/[initiative-slug].md`
 
 Check that both files exist:
 - `programs/[program-slug]/program-context.md`
-- `programs/[program-slug]/[type]/[initiative-slug].md`
+- `[owner-folder]/[type]/[initiative-slug].md`
 
 If either is missing, stop and display:
 
@@ -127,7 +146,7 @@ Derive the blocker slug: `[YYYY-MM-DD]-[initiative-slug]-[primary-type]`
 
 Use today's date in YYYY-MM-DD format.
 
-File path: `programs/[program-slug]/blockers/[blocker-slug].md`
+File path: `[owner-folder]/blockers/[blocker-slug].md`
 
 If a blocker file already exists at that path, append a counter: `[blocker-slug]-2.md`
 
@@ -135,7 +154,7 @@ If a blocker file already exists at that path, append a counter: `[blocker-slug]
 
 ## Step 7 — Generate blocker file
 
-Create `programs/[program-slug]/blockers/[blocker-slug].md` using the template below.
+Create `[owner-folder]/blockers/[blocker-slug].md` using the template below.
 
 ---
 
@@ -161,6 +180,7 @@ If the section already exists, append the new row without removing existing entr
 Blocker logged — [Initiative slug]
 
   Program:    [program-slug]
+  Owner:      [org-slug or unit-slug]
   Initiative: [type] / [initiative-slug]
   Type:       [primary type] (+ [contributing type] if applicable)
   Severity:   [high / medium / low]
@@ -173,8 +193,8 @@ Recommended next steps:
   3. [Action] — [Owner] — by [deadline]
 
 Files created or updated:
-  programs/[program-slug]/blockers/[blocker-slug].md
-  programs/[program-slug]/[type]/[initiative-slug].md — blocker reference added
+  [owner-folder]/blockers/[blocker-slug].md
+  [owner-folder]/[type]/[initiative-slug].md — blocker reference added
 
 Next step: run /vpm-report to include this blocker in a stakeholder status report.
 ```
@@ -189,6 +209,7 @@ Next step: run /vpm-report to include this blocker in a stakeholder status repor
 | Field | Value |
 |---|---|
 | Program | [program-slug] |
+| Owner | [org-slug or unit-slug] |
 | Initiative type | [challenge / solver / pilot] |
 | Initiative | [initiative-slug] |
 | Type | [political / budget / technical / cultural / regulatory / operational] |
@@ -251,34 +272,14 @@ If not resolved by [target resolution date]:
 
 ## Quality criteria
 
+- [ ] Owner folder was derived correctly based on program / batch / org / unit inputs.
 - [ ] The initiative file was validated before any diagnosis was made.
-- [ ] The blocker was classified using the standard taxonomy (political, budget, technical, cultural, regulatory, operational).
+- [ ] The blocker was classified using the standard taxonomy.
 - [ ] Severity was assessed using the defined criteria — not assigned arbitrarily.
 - [ ] Recommended next steps are specific: named owner, concrete action, and a deadline.
-- [ ] The blocker file was created with all required fields populated.
+- [ ] The blocker file was created at `[owner-folder]/blockers/`.
 - [ ] The initiative file was updated with a blocker reference.
 - [ ] Confirmation summary was shown with next steps clearly listed.
-
----
-
-## Usage example
-
-```
-Operator: /vpm-blocker-check
-
-Claude: To diagnose a blocker, please provide:
-        1. Program slug
-        2. Initiative type and slug
-        3. Current status description
-
-Operator: program: global-innovation-sprint
-          initiative: pilot / bringg-technologies-last-mile-visibility-pilot
-          status: IT security has not responded to the data access request
-                  sent 3 weeks ago. The pilot cannot start without their sign-off.
-
-Claude: [Reads pilot file, classifies as regulatory/operational severity: high,
-         generates next steps, creates blocker file, updates pilot file, shows summary]
-```
 
 ---
 

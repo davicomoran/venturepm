@@ -12,15 +12,23 @@ Ask the operator for the following in a single message:
 To run a fit check, please provide:
 
 1. Program slug
-   The slug of the active program.
    Example: global-innovation-sprint
 
-2. Solver slug
-   The slug of the solver to evaluate.
+2. Batch slug (optional)
+   Leave blank if the organization is directly under the program.
+   Example: cohort-2026-q1
+
+3. Organization slug
+   Example: acme-logistics-corp
+
+4. Unit slug (optional)
+   Leave blank if challenges belong to the organization directly.
+   Example: last-mile-operations
+
+5. Solver slug
    Example: bringg-technologies
 
-3. Challenge slug
-   The slug of the challenge to evaluate the solver against.
+6. Challenge slug
    Example: acme-logistics-corp-last-mile-visibility
 ```
 
@@ -28,12 +36,21 @@ Wait for the operator's response before proceeding.
 
 ---
 
-## Step 2 — Validate inputs
+## Step 2 — Resolve owner folder and validate
+
+Derive the owner folder path from the inputs:
+
+| Inputs | Owner folder |
+|---|---|
+| program only | `programs/[program-slug]/orgs/[org-slug]/` |
+| program + batch | `programs/[program-slug]/batches/[batch-slug]/orgs/[org-slug]/` |
+| program + org + unit | `programs/[program-slug]/orgs/[org-slug]/units/[unit-slug]/` |
+| program + batch + org + unit | `programs/[program-slug]/batches/[batch-slug]/orgs/[org-slug]/units/[unit-slug]/` |
 
 Check that all three files exist:
 - `programs/[program-slug]/program-context.md`
-- `programs/[program-slug]/solvers/[solver-slug].md`
-- `programs/[program-slug]/challenges/[challenge-slug].md`
+- `[owner-folder]/solvers/[solver-slug].md`
+- `[owner-folder]/challenges/[challenge-slug].md`
 
 If any file is missing, stop and display:
 
@@ -41,9 +58,9 @@ If any file is missing, stop and display:
 Missing required file: [path]
 
 Ensure the following commands have been run first:
-  /vpm-setup-program   — to initialize the program
-  /vpm-challenge-workshop — to create challenges
-  /vpm-scout           — to create solver profiles
+  /vpm-setup-program       — to initialize the program
+  /vpm-challenge-workshop  — to create challenges
+  /vpm-scout               — to create solver profiles
 ```
 
 Do not proceed if any file is missing.
@@ -52,7 +69,7 @@ Do not proceed if any file is missing.
 
 ## Step 3 — Read solver and challenge context
 
-Read `programs/[program-slug]/solvers/[solver-slug].md` and extract:
+Read `[owner-folder]/solvers/[solver-slug].md` and extract:
 - Company overview (size, funding stage, maturity)
 - Value proposition
 - Technology and product details (core tech, deployment model, integration approach, maturity level)
@@ -62,12 +79,12 @@ Read `programs/[program-slug]/solvers/[solver-slug].md` and extract:
 - Integration feasibility
 - Risks and open questions
 
-Read `programs/[program-slug]/challenges/[challenge-slug].md` and extract:
+Read `[owner-folder]/challenges/[challenge-slug].md` and extract:
 - Challenge title and problem statement
 - Innovation horizon (Efficient / Sustaining / Transformative)
 - Success criteria
 - Known constraints (budget, timeline, technical, organizational)
-- Organization slug and unit (if applicable)
+- Owner slug (org or unit)
 
 Use both documents as the primary basis for scoring. Do not ask the operator to re-enter information already present in these files.
 
@@ -147,13 +164,13 @@ For **Conditional** recommendations, specify the conditions that must be met bef
 
 ## Step 8 — Generate fit assessment file
 
-Create `programs/[program-slug]/solvers/[solver-slug]-[challenge-slug]-fit.md` using the template below.
+Create `[owner-folder]/solvers/[solver-slug]-[challenge-slug]-fit.md` using the template below.
 
 ---
 
 ## Step 9 — Update challenge file
 
-Open `programs/[program-slug]/challenges/[challenge-slug].md` and update the **Linked Solvers** section.
+Open `[owner-folder]/challenges/[challenge-slug].md` and update the **Linked Solvers** section.
 
 Find the row for `[solver-slug]` and update its status to `fit-assessed`. If no row exists, add one:
 
@@ -169,6 +186,7 @@ Find the row for `[solver-slug]` and update its status to `fit-assessed`. If no 
 Fit check completed — [Solver Name] × [Challenge Title]
 
   Program:     [program-slug]
+  Owner:       [org-slug or unit-slug]
   Solver:      [solver-slug]
   Challenge:   [challenge-slug]
 
@@ -180,8 +198,8 @@ Fit check completed — [Solver Name] × [Challenge Title]
   Recommendation:   [Advance to pilot / Conditional / Reject]
 
 Files created or updated:
-  programs/[program-slug]/solvers/[solver-slug]-[challenge-slug]-fit.md
-  programs/[program-slug]/challenges/[challenge-slug].md — evaluation status updated
+  [owner-folder]/solvers/[solver-slug]-[challenge-slug]-fit.md
+  [owner-folder]/challenges/[challenge-slug].md — evaluation status updated
 
 Next step: run /vpm-pilot-launch to design and initiate a pilot with this solver.
 ```
@@ -200,6 +218,7 @@ If the recommendation is **Conditional**, list the open conditions and suggest r
 | Field | Value |
 |---|---|
 | Program | [program-slug] |
+| Owner | [org-slug or unit-slug] |
 | Solver | [solver-slug] |
 | Challenge | [challenge-slug] |
 | Assessed | [YYYY-MM-DD] |
@@ -274,32 +293,15 @@ Score: [1–5] — [Label]
 ## Quality criteria
 
 - [ ] All required inputs were validated before scoring began.
+- [ ] Owner folder was derived correctly based on program / batch / org / unit inputs.
 - [ ] Scores are grounded in evidence from the solver profile and challenge file — not generic assumptions.
 - [ ] Each dimension rationale references specific facts, not vague language.
 - [ ] Critical risks are classified using the blocker taxonomy.
 - [ ] The recommendation follows the decision logic table exactly.
 - [ ] Conditional recommendations include explicit, actionable conditions.
 - [ ] The challenge file was updated with the new evaluation status.
+- [ ] Fit file created at `[owner-folder]/solvers/`.
 - [ ] The confirmation summary was shown to the operator.
-
----
-
-## Usage example
-
-```
-Operator: /vpm-fit-check
-
-Claude: To run a fit check, please provide:
-        1. Program slug
-        2. Solver slug
-        3. Challenge slug
-
-Operator: program: global-innovation-sprint
-          solver: bringg-technologies
-          challenge: acme-logistics-corp-last-mile-visibility
-
-Claude: [Reads both files, scores each dimension, identifies risks, applies decision logic, creates fit file, updates challenge file, shows confirmation summary]
-```
 
 ---
 

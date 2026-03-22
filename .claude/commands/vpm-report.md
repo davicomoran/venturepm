@@ -51,11 +51,19 @@ Read `program-context.md` and extract:
 
 ## Step 3 — Scan and read all program files
 
-Read every file in the following directories. If a directory does not exist or is empty, note it as having no entries.
+Traverse the full nested hierarchy under `programs/[program-slug]/` to find all owner-level entities. Owner-level entities are the folders that contain operational subdirectories (`challenges/`, `solvers/`, `pilots/`, `blockers/`, `decisions/`). The hierarchy may include:
+
+```
+programs/[program]/orgs/[org]/
+programs/[program]/orgs/[org]/units/[unit]/
+programs/[program]/batches/[batch]/orgs/[org]/
+programs/[program]/batches/[batch]/orgs/[org]/units/[unit]/
+```
+
+For each owner-level entity found, read every file in its operational subdirectories. If a directory does not exist or is empty, note it as having no entries.
 
 **challenges/** — For each challenge file, extract:
-- Title, organization, unit, owner
-- Innovation horizon and priority score
+- Title, owner (org or unit), innovation horizon, priority score
 - Status (active / completed / blocked)
 - Linked solvers and their statuses
 - Open blockers referenced

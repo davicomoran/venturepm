@@ -12,11 +12,20 @@ Ask the operator for the following in a single message:
 To run scouting for a challenge, please provide:
 
 1. Program slug
-   The slug of the active program.
    Example: global-innovation-sprint
 
-2. Challenge slug
-   The slug of the challenge to scout solvers for.
+2. Batch slug (optional)
+   Leave blank if the organization is directly under the program.
+   Example: cohort-2026-q1
+
+3. Organization slug
+   Example: acme-logistics-corp
+
+4. Unit slug (optional)
+   Leave blank if challenges belong to the organization directly.
+   Example: last-mile-operations
+
+5. Challenge slug
    Example: acme-logistics-corp-last-mile-visibility
 ```
 
@@ -24,11 +33,20 @@ Wait for the operator's response before proceeding.
 
 ---
 
-## Step 2 — Validate program and challenge exist
+## Step 2 — Resolve owner folder and validate
+
+Derive the owner folder path from the inputs:
+
+| Inputs | Owner folder |
+|---|---|
+| program only | `programs/[program-slug]/orgs/[org-slug]/` |
+| program + batch | `programs/[program-slug]/batches/[batch-slug]/orgs/[org-slug]/` |
+| program + org + unit | `programs/[program-slug]/orgs/[org-slug]/units/[unit-slug]/` |
+| program + batch + org + unit | `programs/[program-slug]/batches/[batch-slug]/orgs/[org-slug]/units/[unit-slug]/` |
 
 Check that both files exist:
 - `programs/[program-slug]/program-context.md`
-- `programs/[program-slug]/challenges/[challenge-slug].md`
+- `[owner-folder]/challenges/[challenge-slug].md`
 
 If the program is not found:
 ```
@@ -38,7 +56,7 @@ Run /vpm-setup-program to initialize it first.
 
 If the challenge is not found:
 ```
-Challenge "[challenge-slug]" not found in program "[program-slug]".
+Challenge "[challenge-slug]" not found in the specified owner folder.
 Run /vpm-challenge-workshop to create challenges first.
 ```
 
@@ -48,12 +66,12 @@ Stop and do not proceed if either is missing.
 
 ## Step 3 — Read challenge context
 
-Read `programs/[program-slug]/challenges/[challenge-slug].md` and extract:
+Read `[owner-folder]/challenges/[challenge-slug].md` and extract:
 - Challenge title and problem statement
 - Innovation horizon (Efficient / Sustaining / Transformative)
 - Success criteria
 - Known constraints
-- Organization slug (to understand the deployment context)
+- Owner slug (org or unit)
 
 Use this context to inform fit assessment in later steps.
 
@@ -128,11 +146,11 @@ For each confirmed solver, derive a slug: lowercase, hyphen-separated, no specia
 
 Example: "Bringg Technologies" → `bringg-technologies`
 
-File path: `programs/[program-slug]/solvers/[solver-slug].md`
+File path: `[owner-folder]/solvers/[solver-slug].md`
 
 If a solver file already exists at that path, notify the operator:
 ```
-A profile for [solver-slug] already exists in this program.
+A profile for [solver-slug] already exists for this challenge owner.
 Do you want to (A) update the existing profile or (B) skip this solver?
 ```
 
@@ -140,7 +158,7 @@ Do you want to (A) update the existing profile or (B) skip this solver?
 
 ## Step 7 — Generate one solver profile per confirmed solver
 
-For each solver, create `programs/[program-slug]/solvers/[solver-slug].md` using the template below.
+For each solver, create `[owner-folder]/solvers/[solver-slug].md` using the template below.
 
 Pre-fill every field you can infer from your knowledge of the company. Mark any field you cannot confidently fill as `_To be validated._`. Do not invent specific client names or financial figures.
 
@@ -154,6 +172,7 @@ Pre-fill every field you can infer from your knowledge of the company. Mark any 
 | Name | [Solver Name] |
 | Slug | [solver-slug] |
 | Program | [program-slug] |
+| Owner | [org-slug or unit-slug] |
 | Website | [URL if known] |
 | Founded | [Year if known] |
 | Headquarters | [City, Country if known] |
@@ -278,9 +297,11 @@ Questions to answer before advancing this solver to fit check or pilot.
 
 ---
 
-## Step 8 — Update challenge file with solver count
+## Step 8 — Update challenge file
 
-Open `programs/[program-slug]/challenges/[challenge-slug].md` and update the **Linked Solvers** section:
+Open `[owner-folder]/challenges/[challenge-slug].md` and make two updates:
+
+**1. Linked Solvers** — add one row per new solver. If the section already has rows, append without removing existing entries:
 
 ```markdown
 ## Linked Solvers
@@ -290,7 +311,13 @@ Open `programs/[program-slug]/challenges/[challenge-slug].md` and update the **L
 | [solver-slug] | [Overall fit score] | in-evaluation |
 ```
 
-Add one row per new solver. If the section already has rows, append without removing existing entries.
+**2. Challenge status** — in the `## Challenge Overview` table, update the `Status` field from `active` to `in-evaluation`:
+
+```markdown
+| Status | in-evaluation |
+```
+
+This indicates the challenge has entered the solver evaluation phase.
 
 ---
 
@@ -300,16 +327,17 @@ Add one row per new solver. If the section already has rows, append without remo
 Scouting completed — [Challenge Title]
 
   Program:    [program-slug]
+  Owner:      [org-slug or unit-slug]
   Challenge:  [challenge-slug]
   Solvers profiled: [N]
 
 Files created:
-  programs/[program-slug]/solvers/[solver-slug-1].md  (fit: [X.X]/5)
-  programs/[program-slug]/solvers/[solver-slug-2].md  (fit: [X.X]/5)
+  [owner-folder]/solvers/[solver-slug-1].md  (fit: [X.X]/5)
+  [owner-folder]/solvers/[solver-slug-2].md  (fit: [X.X]/5)
   ...
 
 Challenge file updated:
-  programs/[program-slug]/challenges/[challenge-slug].md — [N] solver(s) linked.
+  [owner-folder]/challenges/[challenge-slug].md — [N] solver(s) linked; status → in-evaluation
 
 Next step: run /vpm-fit-check to run a structured fit evaluation and produce a shortlist recommendation.
 ```

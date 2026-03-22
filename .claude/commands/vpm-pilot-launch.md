@@ -12,32 +12,49 @@ Ask the operator for the following in a single message:
 To design a pilot, please provide:
 
 1. Program slug
-   The slug of the active program.
    Example: global-innovation-sprint
 
-2. Solver slug
-   The slug of the solver selected for this pilot.
+2. Batch slug (optional)
+   Leave blank if the organization is directly under the program.
+   Example: cohort-2026-q1
+
+3. Organization slug
+   Example: acme-logistics-corp
+
+4. Unit slug (optional)
+   Leave blank if challenges belong to the organization directly.
+   Example: last-mile-operations
+
+5. Solver slug
    Example: bringg-technologies
 
-3. Challenge slug
-   The slug of the challenge this pilot addresses.
+6. Challenge slug
    Example: acme-logistics-corp-last-mile-visibility
 
 The fit assessment will be read automatically from:
-  programs/[program-slug]/solvers/[solver-slug]-[challenge-slug]-fit.md
+  [owner-folder]/solvers/[solver-slug]-[challenge-slug]-fit.md
 ```
 
 Wait for the operator's response before proceeding.
 
 ---
 
-## Step 2 — Validate inputs
+## Step 2 — Resolve owner folder and validate
+
+Derive the owner folder path from the inputs:
+
+| Inputs | Owner folder |
+|---|---|
+| program only | `programs/[program-slug]/orgs/[org-slug]/` |
+| program + batch | `programs/[program-slug]/batches/[batch-slug]/orgs/[org-slug]/` |
+| program + org + unit | `programs/[program-slug]/orgs/[org-slug]/units/[unit-slug]/` |
+| program + batch + org + unit | `programs/[program-slug]/batches/[batch-slug]/orgs/[org-slug]/units/[unit-slug]/` |
 
 Check that all required files exist:
 - `programs/[program-slug]/program-context.md`
-- `programs/[program-slug]/solvers/[solver-slug].md`
-- `programs/[program-slug]/challenges/[challenge-slug].md`
-- `programs/[program-slug]/solvers/[solver-slug]-[challenge-slug]-fit.md`
+- `[owner-folder]/solvers/[solver-slug].md`
+- `[owner-folder]/challenges/[challenge-slug].md`
+- `[owner-folder]/solvers/[solver-slug]-[challenge-slug]-fit.md`
 
 If any file is missing, stop and display:
 
@@ -57,7 +74,7 @@ Do not proceed if any file is missing.
 
 ## Step 3 — Read and validate fit assessment
 
-Read `programs/[program-slug]/solvers/[solver-slug]-[challenge-slug]-fit.md` and extract:
+Read `[owner-folder]/solvers/[solver-slug]-[challenge-slug]-fit.md` and extract:
 - Overall fit score
 - Dimension scores (strategic, technical, operational)
 - Final recommendation (Advance to pilot / Conditional / Reject)
@@ -99,14 +116,14 @@ Wait for the operator's response. If the answer is no, stop and prompt to resolv
 
 ## Step 4 — Read solver and challenge context
 
-Read `programs/[program-slug]/solvers/[solver-slug].md` and extract:
+Read `[owner-folder]/solvers/[solver-slug].md` and extract:
 - Value proposition
 - Technology and product details
 - Business model and pricing signals
 - Integration feasibility (data requirements, IT/security, change management, estimated duration)
 - Reference clients
 
-Read `programs/[program-slug]/challenges/[challenge-slug].md` and extract:
+Read `[owner-folder]/challenges/[challenge-slug].md` and extract:
 - Challenge title and problem statement
 - Organization and unit
 - Success criteria
@@ -173,7 +190,7 @@ Wait for the operator's response before proceeding.
 
 Derive the pilot slug: `[solver-slug]-[challenge-slug]-pilot`
 
-File path: `programs/[program-slug]/pilots/[solver-slug]-[challenge-slug]-pilot.md`
+File path: `[owner-folder]/pilots/[solver-slug]-[challenge-slug]-pilot.md`
 
 If a pilot file already exists at that path, notify the operator:
 
@@ -189,7 +206,7 @@ Wait for the operator's response before proceeding.
 
 ## Step 7 — Generate pilot design document
 
-Create `programs/[program-slug]/pilots/[solver-slug]-[challenge-slug]-pilot.md` using the template below.
+Create `[owner-folder]/pilots/[solver-slug]-[challenge-slug]-pilot.md` using the template below.
 
 Pre-fill every field from the context collected in previous steps. Mark any field that could not be confirmed as `_To be confirmed_`.
 
@@ -199,7 +216,7 @@ Pre-fill every field from the context collected in previous steps. Mark any fiel
 
 For each risk in the fit assessment rated **High** likelihood, create a blocker file:
 
-File path: `programs/[program-slug]/blockers/[YYYY-MM-DD]-[solver-slug]-[risk-type].md`
+File path: `[owner-folder]/blockers/[YYYY-MM-DD]-[solver-slug]-[risk-type].md`
 
 Use this structure:
 
@@ -209,6 +226,7 @@ Use this structure:
 | Field | Value |
 |---|---|
 | Program | [program-slug] |
+| Owner | [org-slug or unit-slug] |
 | Related pilot | [solver-slug]-[challenge-slug]-pilot |
 | Type | [political / budget / technical / cultural / regulatory / operational] |
 | Likelihood | High |
@@ -235,24 +253,33 @@ After creating blocker files, list them in the confirmation summary.
 
 ---
 
-## Step 9 — Update program-context.md
+## Step 8b — Update challenge status
 
-Open `programs/[program-slug]/program-context.md` and update the **Pilots** section to reflect the new pilot:
+Open `[owner-folder]/challenges/[challenge-slug].md` and update the `Status` field in the `## Challenge Overview` table from `in-evaluation` to `in-pilot`:
 
 ```markdown
-| [solver-slug]-[challenge-slug]-pilot | [Solver Name] × [Challenge Title] | [Start date] | in-design |
+| Status | in-pilot |
 ```
 
-If a Pilots section does not exist in the file, add one before the end of the document.
+Also update the **Linked Pilots** section to add a row for this pilot:
+
+```markdown
+## Linked Pilots
+
+| Pilot | Status | Start date |
+|---|---|---|
+| [solver-slug]-[challenge-slug]-pilot | in-design | [YYYY-MM-DD or TBD] |
+```
 
 ---
 
-## Step 10 — Confirm and suggest next step
+## Step 9 — Confirm and suggest next step
 
 ```
 Pilot launched — [Solver Name] × [Challenge Title]
 
   Program:     [program-slug]
+  Owner:       [org-slug or unit-slug]
   Solver:      [solver-slug]
   Challenge:   [challenge-slug]
   Pilot owner: [Name, Role]
@@ -262,14 +289,14 @@ Pilot launched — [Solver Name] × [Challenge Title]
   Status:      in-design
 
 Files created:
-  programs/[program-slug]/pilots/[solver-slug]-[challenge-slug]-pilot.md
-
-Files updated:
-  programs/[program-slug]/program-context.md — pilot count updated
+  [owner-folder]/pilots/[solver-slug]-[challenge-slug]-pilot.md
 
 Blockers opened: [N] (if any)
-  programs/[program-slug]/blockers/[blocker-slug].md — [risk type]
+  [owner-folder]/blockers/[blocker-slug].md — [risk type]
   ...
+
+Challenge updated:
+  [owner-folder]/challenges/[challenge-slug].md — status → in-pilot; pilot linked
 
 Next step: run /vpm-report to generate a status report for this program or pilot.
 ```
@@ -284,6 +311,7 @@ Next step: run /vpm-report to generate a status report for this program or pilot
 | Field | Value |
 |---|---|
 | Program | [program-slug] |
+| Owner | [org-slug or unit-slug] |
 | Solver | [solver-slug] |
 | Challenge | [challenge-slug] |
 | Status | in-design |
@@ -400,7 +428,7 @@ The pilot will be paused or stopped early if any of the following occur:
 |---|---|---|---|
 | [Blocker description] | [Type] | High | open |
 
-_See `programs/[program-slug]/blockers/` for full blocker details._
+_See `[owner-folder]/blockers/` for full blocker details._
 
 ---
 
@@ -423,34 +451,14 @@ _See `programs/[program-slug]/blockers/` for full blocker details._
 ## Quality criteria
 
 - [ ] All required inputs were validated before any file was created.
+- [ ] Owner folder was derived correctly based on program / batch / org / unit inputs.
 - [ ] Fit assessment was read; Reject recommendations blocked progression.
 - [ ] Conditional recommendations required operator confirmation of resolved conditions.
 - [ ] Pilot design includes measurable success criteria and KPIs with baselines and targets.
 - [ ] All High-likelihood risks from the fit assessment were converted to blocker files.
-- [ ] `program-context.md` was updated with the new pilot.
+- [ ] Pilot and blocker files created at `[owner-folder]/pilots/` and `[owner-folder]/blockers/`.
 - [ ] File paths follow slug conventions: lowercase, hyphen-separated.
 - [ ] Confirmation summary was shown to the operator.
-
----
-
-## Usage example
-
-```
-Operator: /vpm-pilot-launch
-
-Claude: To design a pilot, please provide:
-        1. Program slug
-        2. Solver slug
-        3. Challenge slug
-
-Operator: program: global-innovation-sprint
-          solver: bringg-technologies
-          challenge: acme-logistics-corp-last-mile-visibility
-
-Claude: [Validates files, reads fit assessment, reads solver and challenge context,
-         collects pilot-specific details, generates pilot design document,
-         creates blocker entries, updates program-context.md, shows confirmation summary]
-```
 
 ---
 

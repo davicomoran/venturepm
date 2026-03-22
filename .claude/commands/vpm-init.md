@@ -11,9 +11,10 @@ Check for the presence of the following files and directories. Record each as pr
 **Commands** — check `.claude/commands/` for each expected file:
 - `vpm-init.md`
 - `vpm-setup-program.md`
-- `vpm-import-program.md`
+- `vpm-setup-batch.md`
+- `vpm-setup-org.md`
+- `vpm-setup-unit.md`
 - `vpm-new-command.md`
-- `vpm-org-setup.md`
 - `vpm-challenge-workshop.md`
 - `vpm-scout.md`
 - `vpm-fit-check.md`
@@ -37,19 +38,30 @@ Check for the presence of the following files and directories. Record each as pr
 
 Check whether `programs/` exists and contains any subdirectories.
 
-For each program found, read `programs/[program-slug]/program-context.md` and extract:
+For each subfolder found under `programs/`, look for a `program-context.md` file. Read it and confirm `type: program`. Only include entities where `type: program` in the Active Programs section.
+
+For each program found, extract:
 - Program name and mode
 - Program status (active / paused / completed)
 
-Then count pipeline entities per program:
+Then count pipeline entities per program by scanning the full nested hierarchy:
 
-**Challenges** (`challenges/`) — count `.md` files = active challenges
+**Scanning rule:** For each program, recursively find all `challenges/`, `solvers/`, `pilots/`, and `blockers/` directories anywhere within the program's folder tree. These exist at org level (when `has_units: false`) or unit level (when `has_units: true`). The hierarchy can be:
 
-**Solvers** (`solvers/`) — count files not ending in `-fit.md` = solver profiles; count those with `Status: in-evaluation`
+```
+programs/[program]/orgs/[org]/challenges/
+programs/[program]/orgs/[org]/units/[unit]/challenges/
+programs/[program]/batches/[batch]/orgs/[org]/challenges/
+programs/[program]/batches/[batch]/orgs/[org]/units/[unit]/challenges/
+```
 
-**Pilots** (`pilots/`) — count files with `Status: active` or `Status: in-design`
+**Challenges** — in all `challenges/` directories found: count `.md` files = active challenges
 
-**Blockers** (`blockers/`) — count files with `Status: open` or `Status: in-progress`; collect their `Type` values
+**Solvers** — in all `solvers/` directories found: count files not ending in `-fit.md` = solver profiles; count those with `Status: in-evaluation`
+
+**Pilots** — in all `pilots/` directories found: count files with `Status: active` or `Status: in-design`
+
+**Blockers** — in all `blockers/` directories found: count files with `Status: open` or `Status: in-progress`; collect their `Type` values
 
 If a directory does not exist, treat its count as 0.
 
@@ -69,9 +81,10 @@ Display the complete dashboard in this format:
 
   /vpm-init               [present / MISSING]
   /vpm-setup-program      [present / MISSING]
-  /vpm-import-program     [present / MISSING]
+  /vpm-setup-batch        [present / MISSING]
+  /vpm-setup-org          [present / MISSING]
+  /vpm-setup-unit         [present / MISSING]
   /vpm-new-command        [present / MISSING]
-  /vpm-org-setup          [present / MISSING]
   /vpm-challenge-workshop [present / MISSING]
   /vpm-scout              [present / MISSING]
   /vpm-fit-check          [present / MISSING]
@@ -92,15 +105,17 @@ Display the complete dashboard in this format:
 
 ── OPERATIONAL CYCLE ───────────────────
 
-  /vpm-setup-program  (or /vpm-import-program)
-    └─ /vpm-org-setup
-         └─ /vpm-challenge-workshop
-              └─ /vpm-scout
-                   └─ /vpm-fit-check
-                        └─ /vpm-pilot-launch
-                             ├─ /vpm-blocker-check  (any phase)
-                             └─ /vpm-report
-                                  └─ /vpm-challenge-workshop (next cycle)
+  /vpm-setup-program
+    └─ /vpm-setup-batch  (optional)
+         └─ /vpm-setup-org
+              └─ /vpm-setup-unit  (optional)
+                   └─ /vpm-challenge-workshop
+                        └─ /vpm-scout
+                             └─ /vpm-fit-check
+                                  └─ /vpm-pilot-launch
+                                       ├─ /vpm-blocker-check  (any phase)
+                                       └─ /vpm-report
+                                            └─ /vpm-challenge-workshop (next cycle)
 
 ── ACTIVE PROGRAMS ─────────────────────
 
@@ -127,8 +142,9 @@ What would you like to work on?
 - Use today's date in the header.
 - In the OS Commands section, mark each file `present` if it exists in `.claude/commands/`, or `MISSING` (uppercase) if not.
 - In the Project Infrastructure section, mark each item `present` if it exists, or `missing` (lowercase) if not.
-- In the Active Programs section, list programs alphabetically by slug. Count only `active` programs in the headline; include `paused` and `completed` programs with their label appended — e.g., `Mode: venture-client (paused)`.
+- In the Active Programs section, list programs alphabetically by slug. Count only `active` programs in the headline; include `paused` and `completed` programs with their label appended — e.g., `venture-client (paused)`.
 - Only include `types:` on the Blockers line if there is at least one open blocker.
+- Pipeline counts are aggregated across all orgs, batches, and units within the program.
 - If `programs/` is empty or does not exist, replace the Active Programs section with:
 
 ```
@@ -147,7 +163,9 @@ After displaying the dashboard, wait for the operator's response. Based on their
 | If the operator wants to… | Suggest |
 |---|---|
 | Start a new program | `/vpm-setup-program` |
-| Add an organization to a program | `/vpm-org-setup` |
+| Add a cohort to a program | `/vpm-setup-batch` |
+| Add an organization to a program or batch | `/vpm-setup-org` |
+| Add a unit to an organization | `/vpm-setup-unit` |
 | Define or prioritize challenges | `/vpm-challenge-workshop` |
 | Scout solvers for a challenge | `/vpm-scout` |
 | Evaluate a solver against a challenge | `/vpm-fit-check` |
@@ -162,71 +180,13 @@ After displaying the dashboard, wait for the operator's response. Based on their
 ## Quality criteria
 
 - [ ] OS infrastructure was scanned from actual files — not assumed from memory.
-- [ ] All 11 expected commands are listed with accurate present/MISSING status.
+- [ ] All 12 expected commands are listed with accurate present/MISSING status.
 - [ ] All 8 infrastructure items are listed with accurate present/missing status.
-- [ ] The operational cycle is displayed as a visual tree.
-- [ ] Program pipeline counts are derived from actual files, not estimated.
+- [ ] The operational cycle is displayed as a visual tree including setup-batch and setup-unit.
+- [ ] Pipeline counts traverse the full nested hierarchy — not just program-level paths.
 - [ ] Blocker types are listed only when at least one open blocker exists.
 - [ ] Programs with paused or completed status are shown but labeled.
 - [ ] Today's date appears in the dashboard header.
-
----
-
-## Usage example
-
-```
-Operator: /vpm-init
-
-Claude:
-════════════════════════════════════════
-  VENTUREPM — Session Dashboard
-  2026-03-20
-════════════════════════════════════════
-
-── OS COMMANDS ─────────────────────────
-
-  /vpm-init               present
-  /vpm-setup-program      present
-  /vpm-new-command        present
-  /vpm-org-setup          present
-  /vpm-challenge-workshop present
-  /vpm-scout              present
-  /vpm-fit-check          present
-  /vpm-pilot-launch       present
-  /vpm-blocker-check      present
-  /vpm-report             present
-
-── PROJECT INFRASTRUCTURE ──────────────
-
-  README.md               missing
-  templates/program.md    missing
-  templates/challenge.md  missing
-  templates/solver.md     missing
-  templates/pilot.md      missing
-  templates/blocker.md    missing
-  templates/decision.md   missing
-  docs/                   missing
-
-── OPERATIONAL CYCLE ───────────────────
-
-  /vpm-setup-program  (or /vpm-import-program)
-    └─ /vpm-org-setup
-         └─ /vpm-challenge-workshop
-              └─ /vpm-scout
-                   └─ /vpm-fit-check
-                        └─ /vpm-pilot-launch
-                             ├─ /vpm-blocker-check  (any phase)
-                             └─ /vpm-report
-                                  └─ /vpm-challenge-workshop (next cycle)
-
-── ACTIVE PROGRAMS ─────────────────────
-
-  No programs found.
-  Run /vpm-setup-program to initialize your first program.
-
-════════════════════════════════════════
-What would you like to work on?
-```
 
 ---
 

@@ -1,166 +1,176 @@
 # /vpm-setup-program
 
-Initializes a new entity in VenturePM by collecting details, validating the hierarchy, creating the folder structure, and generating `program-context.md`. Supports all four entity types: program, batch, organization, and unit.
+Sets up a new program in VenturePM. Supports three input modes: manual entry, document import, or web search from verified sources. Programs are context containers — only `program-context.md` is created, no operational subdirectories.
 
 ---
 
-## Step 1 — Collect entity details
+## Step 1 — Choose input mode
 
-Ask the operator for all of the following in a single message:
+Ask the operator:
 
 ```
-To set up a new entity, please provide the following:
+To set up a new program, how would you like to provide the information?
 
-1. Entity type
-   What kind of entity is this?
-   Options: program / batch / organization / unit
+  A) Manual entry    — answer questions interactively
+  B) Document import — attach or paste a document (PDF, Word, or plain text)
+  C) Web search      — search verified public sources by program or organization name
 
-   Hierarchy reference:
-     program      → top-level initiative, no parent
-     batch        → cohort of a program (parent: program)
-     organization → company or entity in a batch or program
-     unit         → sub-team within an organization
-
-2. Entity name
-   What is the name of this entity?
-
-3. Parent slug
-   The slug of the parent entity in the hierarchy.
-   Use null if type is program.
-   Example: global-innovation-sprint
-
-4. Mode
-   venture-client / venture-building / hybrid
-   For batch, organization, and unit: leave blank to inherit from parent.
-
-5. Description
-   What is the purpose or role of this entity? (1–2 sentences)
-
-6. Process intensity (programs and batches only)
-   light / standard / full
-   - light: simplified pipeline, fewer gates, smaller team
-   - standard: full 5-phase pipeline with standard governance
-   - full: extended pipeline with additional evaluation layers and reporting
-   Leave blank for organization and unit.
-
-7. Lead
-   Name and contact (email or handle) of the person responsible for this entity.
-
-8. Start date and expected duration
-   Example: 2026-04-01, 6 months
+Type A, B, or C.
 ```
 
 Wait for the operator's response before proceeding.
 
 ---
 
-## Step 2 — Validate entity type and parent
+## Step 2 — Collect program data
 
-Apply the following rules based on the declared entity type:
+### Mode A — Manual entry
 
-### If type = `program`
-- `parent` must be `null`. If the operator provided a parent slug, ask them to confirm this is a top-level entity before proceeding.
-- `mode` is required. If not provided, ask for it before continuing.
+Ask for the following in a single message:
 
-### If type = `batch`
-- `parent` is required and must be of type `program`.
-- Check that `programs/[parent-slug]/program-context.md` exists and that its `type` field is `program`.
-- If not found or type mismatch, stop:
-  ```
-  Parent entity "[parent-slug]" not found or is not a program.
-  A batch must be parented to a program. Run /vpm-setup-program with type: program first.
-  ```
-- `mode` is inherited from the parent program unless the operator explicitly provides an override.
+```
+Program setup — manual entry
 
-### If type = `organization`
-- `parent` is required and must be of type `program` or `batch`.
-- Check that `programs/[parent-slug]/program-context.md` exists and that its `type` field is `program` or `batch`.
-- If not found or type mismatch, stop:
-  ```
-  Parent entity "[parent-slug]" not found or is not a program or batch.
-  An organization must be parented to a program or batch.
-  ```
-- `mode` is inherited from the parent. Do not ask for it.
+1.  Program name
+2.  Mode: venture-client / venture-building / hybrid
+3.  Description (1–3 sentences — purpose or mission)
+4.  Start date (YYYY-MM-DD or approximate)
+5.  End date (optional)
+6.  Team (names and roles, if known)
+7.  Budget (total or annual, if known)
+8.  Success metrics (KPIs or targets, if defined)
+9.  Governance (committees, sponsors, approval structures)
+10. Scope (geography, industries, or technology domains)
+11. Solver criteria (eligibility rules for who can participate as a solver — leave blank to use VenturePM defaults)
+12. Evaluation process (custom phases or gates — leave blank to use the standard 5-phase pipeline)
+```
 
-### If type = `unit`
-- `parent` is required and must be of type `organization`.
-- Check that `programs/[parent-slug]/program-context.md` exists and that its `type` field is `organization`.
-- If not found or type mismatch, stop:
-  ```
-  Parent entity "[parent-slug]" not found or is not an organization.
-  A unit must be parented to an organization.
-  ```
-- `mode` is inherited from the parent organization. Do not ask for it.
+Mark any field not provided as `[TO CONFIRM]`.
+
+### Mode B — Document import
+
+Ask the operator to attach or paste the document:
+
+```
+Attach or paste the source document.
+Accepted: PDF, Word (.docx), or plain text.
+```
+
+Read the document and extract all program fields. Mark any field that cannot be confidently extracted as `[TO CONFIRM]`. Do not invent values.
+
+Extraction map:
+
+| Field | What to look for |
+|---|---|
+| `name` | Official name of the initiative or program |
+| `mode` | Whether the program buys from external solvers (venture-client), builds internally (venture-building), or both (hybrid) |
+| `description` | Program purpose, mission, or strategic intent |
+| `start_date` | Launch or kickoff date |
+| `end_date` | Planned end or review date |
+| `team` | Named team members and their roles |
+| `budget` | Total or annual budget for the program |
+| `success_metrics` | KPIs, targets, or evaluation criteria stated in the document |
+| `governance` | Committees, sponsors, or approval structures |
+| `scope` | Industries, geographies, or technology domains in focus |
+| `solver_criteria` | Eligibility rules for solvers — company type, size, geography, stage, or technology requirements explicitly stated |
+| `evaluation_process` | Custom phases, gates, or evaluation methodology described in the document |
+
+### Mode C — Web search
+
+Ask the operator:
+
+```
+Provide the program or organization name to search:
+```
+
+Search verified public sources (official website, LinkedIn, Crunchbase, press releases, news) to extract program fields. Mark any field not confirmed from public sources as `[TO CONFIRM]`. Do not invent values.
 
 ---
 
-## Step 3 — Derive the entity slug
+## Step 3 — Present preview for review
 
-Convert the entity name to a slug: lowercase, hyphen-separated, no special characters, no accents.
+Display all collected data before creating any files:
 
-Example: "Acme Logistics Corp" → `acme-logistics-corp`
-Example: "Cohort 2026-Q1" → `cohort-2026-q1`
-
-If a folder already exists at `programs/[entity-slug]/`, notify the operator:
 ```
-An entity with slug "[entity-slug]" already exists.
-Do you want to (A) choose a different name or (B) overwrite the existing program-context.md?
+Program setup preview — [Program Name]
+
+  name:             [value or TO CONFIRM]
+  type:             program
+  parent:           null
+  mode:             [value or TO CONFIRM]
+  status:           active
+
+  description:        [value or TO CONFIRM]
+  start_date:         [value or TO CONFIRM]
+  end_date:           [value or TO CONFIRM]
+  team:               [value or TO CONFIRM]
+  budget:             [value or TO CONFIRM]
+  success_metrics:    [value or TO CONFIRM]
+  governance:         [value or TO CONFIRM]
+  scope:              [value or TO CONFIRM]
+  solver_criteria:    [value or "VenturePM defaults"]
+  evaluation_process: [value or "Standard 5-phase pipeline"]
+
+Does this look correct?
+  - Type YES to proceed.
+  - Type EDIT followed by corrections to adjust.
+  - Type CANCEL to stop without creating any files.
 ```
 
-Wait for the operator's response before proceeding.
+Wait for the operator's response. If EDIT, apply corrections and redisplay. Wait for YES before proceeding.
 
 ---
 
-## Step 4 — Create the folder structure
+## Step 4 — Derive program slug
 
-Create the following directories:
+Normalize the program name: lowercase, hyphen-separated, no special characters, no accents.
+
+Example: "Global Innovation Sprint" → `global-innovation-sprint`
+
+If a folder already exists at `programs/[program-slug]/`, notify the operator:
 
 ```
-programs/[entity-slug]/
-├── program-context.md
-├── challenges/
-├── solvers/
-├── pilots/
-├── blockers/
-└── decisions/
+A program with slug "[program-slug]" already exists.
+Do you want to (A) overwrite the existing program-context.md or (B) cancel?
 ```
 
-Subfolders are created empty. Do not add placeholder files inside them.
+Wait for the operator's response.
 
 ---
 
-## Step 5 — Generate program-context.md
+## Step 5 — Create folder and generate program-context.md
 
-Create `programs/[entity-slug]/program-context.md` using the appropriate template for the entity type.
+Create `programs/[program-slug]/` with only the context file. No subdirectories.
 
-### Template — program
+```
+programs/[program-slug]/
+└── program-context.md
+```
+
+Use this template:
 
 ```markdown
-# [Entity Name] — Program Context
+# [Program Name] — Program Context
 
 ## Identity
 
 | Field | Value |
 |---|---|
-| Name | [Entity Name] |
-| Slug | [entity-slug] |
+| Name | [Program Name] |
+| Slug | [program-slug] |
 | Type | program |
 | Parent | null |
 | Mode | [venture-client / venture-building / hybrid] |
 | Status | active |
+| Created | [YYYY-MM-DD] |
+
+---
 
 ## Description
 
-[Description]
+[Program purpose, mission, or strategic intent.]
 
-## Process Configuration
-
-| Field | Value |
-|---|---|
-| Intensity | [light / standard / full] |
-| Pipeline phases | Setup → Challenges → Scouting → Evaluation → Pilots |
-| Blocker tracking | enabled |
-| Decision log | enabled |
+---
 
 ## Team
 
@@ -168,201 +178,94 @@ Create `programs/[entity-slug]/program-context.md` using the appropriate templat
 |---|---|---|
 | Program Lead | [Name] | [Contact] |
 
-## Batches / Organizations
+---
 
-_No batches or organizations enrolled yet._
-_Run /vpm-setup-program (type: batch or organization) or /vpm-org-setup to add the first._
+## Budget
+
+[Budget details or TO CONFIRM]
+
+---
 
 ## Success Metrics
 
-_To be defined._
-
-## Key Dates
-
-| Milestone | Date |
-|---|---|
-| Start date | [Start date] |
-| Expected end date | [Calculated from start + duration] |
-| Last updated | [Today's date — YYYY-MM-DD] |
-```
+[KPIs or targets or TO CONFIRM]
 
 ---
 
-### Template — batch
+## Governance
 
-```markdown
-# [Entity Name] — Batch Context
-
-## Identity
-
-| Field | Value |
-|---|---|
-| Name | [Entity Name] |
-| Slug | [entity-slug] |
-| Type | batch |
-| Parent | [parent-slug] |
-| Mode | [inherited from parent / override if specified] |
-| Status | active |
-
-## Description
-
-[Description]
-
-## Process Configuration
-
-| Field | Value |
-|---|---|
-| Intensity | [light / standard / full] |
-| Pipeline phases | Setup → Challenges → Scouting → Evaluation → Pilots |
-| Blocker tracking | enabled |
-| Decision log | enabled |
-
-## Team
-
-| Role | Name | Contact |
-|---|---|---|
-| Batch Lead | [Name] | [Contact] |
-
-## Organizations Enrolled
-
-_No organizations enrolled yet. Run /vpm-org-setup to add the first._
-
-## Key Dates
-
-| Milestone | Date |
-|---|---|
-| Start date | [Start date] |
-| Expected end date | [Calculated from start + duration] |
-| Last updated | [Today's date — YYYY-MM-DD] |
-```
+[Committees, sponsors, or approval structures or TO CONFIRM]
 
 ---
 
-### Template — organization
-
-```markdown
-# [Entity Name] — Organization Context
-
-## Identity
+## Scope
 
 | Field | Value |
 |---|---|
-| Name | [Entity Name] |
-| Slug | [entity-slug] |
-| Type | organization |
-| Parent | [parent-slug] |
-| Mode | [inherited from parent] |
-| Status | active |
-
-## Description
-
-[Description — what this organization does and its role in the program.]
-
-## Profile
-
-| Field | Value |
-|---|---|
-| Industry | _To be added_ |
-| Headquarters | _To be added_ |
-| Size | _To be added_ |
-| Website | _To be added_ |
-
-## Team
-
-| Role | Name | Contact |
-|---|---|---|
-| Organization Lead | [Name] | [Contact] |
-
-## Units
-
-_No units defined yet. Run /vpm-setup-program (type: unit) if sub-team scoping is needed._
-
-## Challenges
-
-_No challenges defined yet. Run /vpm-challenge-workshop to identify and prioritize challenges._
-
-## Key Dates
-
-| Milestone | Date |
-|---|---|
-| Enrolled | [Today's date — YYYY-MM-DD] |
-| Last updated | [Today's date — YYYY-MM-DD] |
-```
+| Geography | [Regions or countries] |
+| Domains | [Industries, sectors, or technology areas] |
 
 ---
 
-### Template — unit
+## Solver Criteria
 
-```markdown
-# [Entity Name] — Unit Context
+[Eligibility rules for who can participate as a solver — company type, size, geography, stage, technology requirements, or other constraints. If not defined, VenturePM defaults apply.]
 
-## Identity
+---
 
-| Field | Value |
-|---|---|
-| Name | [Entity Name] |
-| Slug | [entity-slug] |
-| Type | unit |
-| Parent | [parent-slug] |
-| Mode | [inherited from parent] |
-| Status | active |
+## Evaluation Process
 
-## Description
+[Custom phases, gates, or evaluation methodology for this program. If not defined, the standard 5-phase pipeline applies: Setup → Challenges → Scouting → Evaluation → Pilots.]
 
-[Description — what this unit is responsible for and its role within the parent organization.]
-
-## Team
-
-| Role | Name | Contact |
-|---|---|---|
-| Unit Lead | [Name] | [Contact] |
-
-## Challenges
-
-_No challenges defined yet. Run /vpm-challenge-workshop to identify and prioritize challenges._
+---
 
 ## Key Dates
 
 | Milestone | Date |
 |---|---|
-| Enrolled | [Today's date — YYYY-MM-DD] |
+| Start date | [YYYY-MM-DD or TO CONFIRM] |
+| End date | [YYYY-MM-DD or TO CONFIRM] |
 | Last updated | [Today's date — YYYY-MM-DD] |
+
+---
+
+## Fields to Confirm
+
+- [ ] [Field] — [why it matters]
 ```
 
 ---
 
 ## Step 6 — Confirm and suggest next step
 
-Display a confirmation summary:
-
 ```
-Entity created successfully.
+Program created — [Program Name]
 
-  Name:    [Entity Name]
-  Slug:    [entity-slug]
-  Type:    [entity type]
-  Parent:  [parent-slug or none]
-  Mode:    [mode or inherited from parent-slug]
-  Lead:    [Lead name]
-  Start:   [Start date]
+  Slug:    [program-slug]
+  Mode:    [mode]
+  Status:  active
+
+  Fields confirmed:   [N]
+  Fields to confirm:  [N]
 
 Files created:
-  programs/[entity-slug]/program-context.md
-  programs/[entity-slug]/challenges/
-  programs/[entity-slug]/solvers/
-  programs/[entity-slug]/pilots/
-  programs/[entity-slug]/blockers/
-  programs/[entity-slug]/decisions/
+  programs/[program-slug]/program-context.md
+
+Next step:
+  Run /vpm-setup-batch to add a cohort, or
+  Run /vpm-setup-org to onboard organizations directly.
 ```
 
-Suggest next step based on entity type:
+---
 
-| Entity type | Next step |
-|---|---|
-| `program` | Run `/vpm-setup-program` again with type `batch` to add a cohort, `/vpm-org-setup` to enroll organizations directly, or `/vpm-import-program` to load entities from existing documents. |
-| `batch` | Run `/vpm-org-setup` to enroll the first organization into this batch. |
-| `organization` | Run `/vpm-challenge-workshop` to identify and prioritize challenges for this organization. |
-| `unit` | Run `/vpm-challenge-workshop` to identify and prioritize challenges for this unit. |
+## Quality criteria
+
+- [ ] Input mode was selected before data collection began.
+- [ ] All fields not provided or found were marked [TO CONFIRM] — not invented.
+- [ ] Operator reviewed and approved the preview before any file was created.
+- [ ] Only program-context.md was created — no operational subdirectories.
+- [ ] Slug: lowercase, hyphen-separated, no accents.
+- [ ] Confirmation summary shows confirmed and unconfirmed field counts.
 
 ---
 
@@ -370,7 +273,6 @@ Suggest next step based on entity type:
 
 | Relation | Command | Why |
 |---|---|---|
-| Alternative to | `/vpm-import-program` | Use `/vpm-import-program` when an existing document describes the entity — avoids re-entering information manually. |
-| Preceded by | `/vpm-setup-program` (parent entity) | Build the hierarchy top-down: create program first, then batch, then organization, then unit. |
-| Followed by | `/vpm-org-setup` | After creating a program or batch, use this to enroll organizations with a full profile. |
-| Followed by | `/vpm-challenge-workshop` | After creating an organization or unit, define and prioritize challenges. |
+| Followed by | `/vpm-setup-batch` | Add a cohort to the program. |
+| Followed by | `/vpm-setup-org` | Onboard organizations directly if no batches are needed. |
+| Followed by | `/vpm-init` | Run after setup to see the updated dashboard. |
