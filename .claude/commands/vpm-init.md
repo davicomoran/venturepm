@@ -19,17 +19,12 @@ Check for the presence of the following files and directories. Record each as pr
 - `vpm-scout.md`
 - `vpm-fit-check.md`
 - `vpm-pilot-launch.md`
+- `vpm-pilot-review.md`
 - `vpm-blocker-check.md`
 - `vpm-report.md`
 
 **Infrastructure** — check for:
 - `README.md` (root)
-- `templates/program.md`
-- `templates/challenge.md`
-- `templates/solver.md`
-- `templates/pilot.md`
-- `templates/blocker.md`
-- `templates/decision.md`
 - `docs/` directory (any content)
 
 ---
@@ -89,18 +84,13 @@ Display the complete dashboard in this format:
   /vpm-scout              [present / MISSING]
   /vpm-fit-check          [present / MISSING]
   /vpm-pilot-launch       [present / MISSING]
+  /vpm-pilot-review       [present / MISSING]
   /vpm-blocker-check      [present / MISSING]
   /vpm-report             [present / MISSING]
 
 ── PROJECT INFRASTRUCTURE ──────────────
 
   README.md              [present / missing]
-  templates/program.md   [present / missing]
-  templates/challenge.md [present / missing]
-  templates/solver.md    [present / missing]
-  templates/pilot.md     [present / missing]
-  templates/blocker.md   [present / missing]
-  templates/decision.md  [present / missing]
   docs/                  [present / missing]
 
 ── OPERATIONAL CYCLE ───────────────────
@@ -113,9 +103,10 @@ Display the complete dashboard in this format:
                         └─ /vpm-scout
                              └─ /vpm-fit-check
                                   └─ /vpm-pilot-launch
-                                       ├─ /vpm-blocker-check  (any phase)
-                                       └─ /vpm-report
-                                            └─ /vpm-challenge-workshop (next cycle)
+                                       └─ /vpm-pilot-review
+                                            ├─ /vpm-blocker-check  (any phase)
+                                            └─ /vpm-report
+                                                 └─ /vpm-challenge-workshop (next cycle)
 
 ── ACTIVE PROGRAMS ─────────────────────
 
@@ -170,6 +161,7 @@ After displaying the dashboard, wait for the operator's response. Based on their
 | Scout solvers for a challenge | `/vpm-scout` |
 | Evaluate a solver against a challenge | `/vpm-fit-check` |
 | Design or launch a pilot | `/vpm-pilot-launch` |
+| Activate, check, or close a pilot | `/vpm-pilot-review` |
 | Investigate why something is stalled | `/vpm-blocker-check` |
 | Generate a program report | `/vpm-report` |
 | Create a new command | `/vpm-new-command` |
@@ -180,8 +172,8 @@ After displaying the dashboard, wait for the operator's response. Based on their
 ## Quality criteria
 
 - [ ] OS infrastructure was scanned from actual files — not assumed from memory.
-- [ ] All 12 expected commands are listed with accurate present/MISSING status.
-- [ ] All 8 infrastructure items are listed with accurate present/missing status.
+- [ ] All 13 expected commands are listed with accurate present/MISSING status.
+- [ ] Both infrastructure items (README.md and docs/) are listed with accurate present/missing status.
 - [ ] The operational cycle is displayed as a visual tree including setup-batch and setup-unit.
 - [ ] Pipeline counts traverse the full nested hierarchy — not just program-level paths.
 - [ ] Blocker types are listed only when at least one open blocker exists.

@@ -6,7 +6,25 @@ Co-designs a pilot between a solver and an organization within a program. Genera
 
 ## Step 1 — Collect inputs
 
-Ask the operator for the following in a single message:
+### Context inference
+
+If this command is run immediately after `/vpm-fit-check` or another `/vpm-` command in the same session, infer the program, batch, org, unit, solver, and challenge slugs from the established session context. Do not re-ask for information already known.
+
+Display the inferred context for confirmation:
+
+```
+Context inferred from session:
+  Program:    [program-slug]
+  Batch:      [batch-slug or —]
+  Org:        [org-slug]
+  Unit:       [unit-slug or —]
+  Solver:     [solver-slug]
+  Challenge:  [challenge-slug]
+
+Is this correct? (yes / no)
+```
+
+If the operator confirms, proceed. If no session context is available, ask for all inputs:
 
 ```
 To design a pilot, please provide:
@@ -212,7 +230,38 @@ Pre-fill every field from the context collected in previous steps. Mark any fiel
 
 ---
 
-## Step 8 — Create blocker entries for critical risks
+## Step 8 — Create decision log entry
+
+Create `[owner-folder]/decisions/[YYYY-MM-DD]-[solver-slug]-[challenge-slug]-pilot-launch.md` using this template:
+
+```markdown
+# Decision — [Solver Name] × [Challenge Title] — Pilot Launch
+
+| Field | Value |
+|---|---|
+| Program | [program-slug] |
+| Owner | [org-slug or unit-slug] |
+| Type | pilot-launch |
+| Initiative | [solver-slug] × [challenge-slug] |
+| Date | [YYYY-MM-DD] |
+| Outcome | launch |
+| Fit score | [X.X]/5 — [Advance to pilot / Conditional] |
+| Pilot owner | [Name, Role] |
+| Owner | [Operator name or "Claude / operator"] |
+
+## Summary
+
+[2–3 sentences describing what pilot was launched, the key scope commitments made, and the primary reason the solver was selected for this challenge.]
+
+## Reference
+
+Pilot design: `[owner-folder]/pilots/[solver-slug]-[challenge-slug]-pilot.md`
+Fit assessment: `[owner-folder]/solvers/[solver-slug]-[challenge-slug]-fit.md`
+```
+
+---
+
+## Step 9 — Create blocker entries for critical risks
 
 For each risk in the fit assessment rated **High** likelihood, create a blocker file:
 
@@ -230,6 +279,7 @@ Use this structure:
 | Related pilot | [solver-slug]-[challenge-slug]-pilot |
 | Type | [political / budget / technical / cultural / regulatory / operational] |
 | Likelihood | High |
+| Severity | high |
 | Status | open |
 | Owner | _To be assigned_ |
 | Opened | [YYYY-MM-DD] |
@@ -253,7 +303,7 @@ After creating blocker files, list them in the confirmation summary.
 
 ---
 
-## Step 8b — Update challenge status
+## Step 10 — Update challenge status
 
 Open `[owner-folder]/challenges/[challenge-slug].md` and update the `Status` field in the `## Challenge Overview` table from `in-evaluation` to `in-pilot`:
 
@@ -273,7 +323,7 @@ Also update the **Linked Pilots** section to add a row for this pilot:
 
 ---
 
-## Step 9 — Confirm and suggest next step
+## Step 11 — Confirm and suggest next step
 
 ```
 Pilot launched — [Solver Name] × [Challenge Title]
@@ -290,6 +340,7 @@ Pilot launched — [Solver Name] × [Challenge Title]
 
 Files created:
   [owner-folder]/pilots/[solver-slug]-[challenge-slug]-pilot.md
+  [owner-folder]/decisions/[YYYY-MM-DD]-[solver-slug]-[challenge-slug]-pilot-launch.md
 
 Blockers opened: [N] (if any)
   [owner-folder]/blockers/[blocker-slug].md — [risk type]
@@ -457,6 +508,7 @@ _See `[owner-folder]/blockers/` for full blocker details._
 - [ ] Pilot design includes measurable success criteria and KPIs with baselines and targets.
 - [ ] All High-likelihood risks from the fit assessment were converted to blocker files.
 - [ ] Pilot and blocker files created at `[owner-folder]/pilots/` and `[owner-folder]/blockers/`.
+- [ ] Decision log entry created at `[owner-folder]/decisions/`.
 - [ ] File paths follow slug conventions: lowercase, hyphen-separated.
 - [ ] Confirmation summary was shown to the operator.
 
@@ -468,4 +520,5 @@ _See `[owner-folder]/blockers/` for full blocker details._
 |---|---|---|
 | Preceded by | `/vpm-fit-check` | A scored fit assessment with an Advance or Conditional recommendation must exist before a pilot can be designed. |
 | Triggered during | `/vpm-blocker-check` | High-likelihood risks from the fit assessment are converted to blockers during pilot launch. |
+| Followed by | `/vpm-pilot-review` | Once a pilot is in-design, run `/vpm-pilot-review` to activate, check progress, and close the pilot with a Scale/Extend/Stop decision. |
 | Followed by | `/vpm-report` | Once a pilot is in-design or active, a status report can be generated for stakeholders. |

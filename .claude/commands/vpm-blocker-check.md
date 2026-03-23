@@ -102,6 +102,8 @@ A blocker may have a **primary type** and a **contributing type** if multiple di
 
 ### Severity assessment
 
+Severity measures the **impact** of the blocker if left unresolved. This is distinct from likelihood (probability the risk materializes), which is used upstream in fit assessments.
+
 | Severity | Criteria |
 |---|---|
 | `high` | The initiative cannot proceed at all without resolving this blocker. Risk of full stall or cancellation. |
@@ -167,7 +169,7 @@ Open the initiative file and add or update a **Blockers** section:
 
 | Blocker | Type | Severity | Status |
 |---|---|---|---|
-| [blocker-slug] | [type] | [high / medium / low] | open |
+| [blocker-slug] | [type] | [high / medium / low — severity] | open |
 ```
 
 If the section already exists, append the new row without removing existing entries.
@@ -214,7 +216,8 @@ Next step: run /vpm-report to include this blocker in a stakeholder status repor
 | Initiative | [initiative-slug] |
 | Type | [political / budget / technical / cultural / regulatory / operational] |
 | Contributing type | [secondary type, if applicable] |
-| Severity | [high / medium / low] |
+| Likelihood | [High / Medium / Low — probability this risk materializes, if known] |
+| Severity | [high / medium / low — impact if unresolved] |
 | Status | open |
 | Owner | [Name and role, or _To be assigned_] |
 | Opened | [YYYY-MM-DD] |

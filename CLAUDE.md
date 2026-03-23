@@ -378,6 +378,7 @@ All VenturePM commands use the `vpm-` prefix.
 | `/vpm-scout` | Source solvers for a specific challenge. Solvers are evaluation artefacts — created exclusively through scouting, always linked to a challenge. Supports named solvers, AI-suggested candidates, or both. |
 | `/vpm-fit-check` | Evaluate solver-challenge fit across strategic, technical, and operational-cultural dimensions. Produces a scored assessment with critical risks and a final recommendation: Advance to pilot / Conditional / Reject. |
 | `/vpm-pilot-launch` | Co-design a pilot between a solver and an organization or unit. Generates a complete pilot design document with success criteria, KPIs, timeline, responsibilities, and escalation conditions. Creates blocker entries for critical risks. |
+| `/vpm-pilot-review` | Manage the pilot lifecycle after launch: activate the pilot, record progress checks, and close the pilot with a final decision (Scale / Extend / Stop). Creates a decision log entry at close. |
 | `/vpm-blocker-check` | Diagnose why a challenge, solver evaluation, or pilot is not progressing. Classifies the blocker type, assesses severity, assigns an owner, and recommends concrete next steps with deadlines. |
 | `/vpm-report` | Generate a periodic executive report for a program. Traverses the full hierarchy to consolidate pipeline status, headline metrics, top advances, open blockers, decisions, learnings, and prioritized next steps. |
 

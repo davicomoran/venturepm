@@ -1,38 +1,64 @@
 # /vpm-fit-check
 
-Evaluates the fit between a solver and a specific challenge across three dimensions: strategic, technical, and operational-cultural. Generates a structured fit assessment with dimension scores, critical risks, and a final recommendation (Advance to pilot / Conditional / Reject).
+Evaluates the fit between one or more solvers and a specific challenge across three dimensions: strategic, technical, and operational-cultural. Supports single-solver and batch modes. Generates a structured fit assessment per solver and, in batch mode, a comparative ranking at the end.
 
 ---
 
 ## Step 1 — Collect inputs
 
-Ask the operator for the following in a single message:
+### Context inference
+
+If this command is run immediately after `/vpm-scout` or another `/vpm-` command in the same session, infer the program, batch, org, unit, and challenge slugs from the established session context. Do not re-ask for information already known.
+
+Display the inferred context for confirmation:
+
+```
+Context inferred from session:
+  Program:    [program-slug]
+  Batch:      [batch-slug or —]
+  Org:        [org-slug]
+  Unit:       [unit-slug or —]
+  Challenge:  [challenge-slug]
+
+Is this correct? (yes / no)
+```
+
+If the operator confirms, proceed. If no session context is available, ask for all inputs:
 
 ```
 To run a fit check, please provide:
 
 1. Program slug
-   Example: global-innovation-sprint
+   Example: innovation-program-2026
 
 2. Batch slug (optional)
    Leave blank if the organization is directly under the program.
-   Example: cohort-2026-q1
+   Example: cohort-q1
 
 3. Organization slug
-   Example: acme-logistics-corp
+   Example: corp-name
 
 4. Unit slug (optional)
    Leave blank if challenges belong to the organization directly.
-   Example: last-mile-operations
+   Example: division-name
 
-5. Solver slug
-   Example: bringg-technologies
-
-6. Challenge slug
-   Example: acme-logistics-corp-last-mile-visibility
+5. Challenge slug
+   Example: org-name-challenge-slug
 ```
 
-Wait for the operator's response before proceeding.
+### Solver selection
+
+Ask the operator:
+
+```
+Which solver(s) would you like to evaluate?
+
+  — Enter one slug for a single fit check
+  — Enter multiple slugs (comma-separated) for batch mode
+  — Type "all" to evaluate all solvers linked to this challenge
+```
+
+Wait for the operator's response. Store the solver list for sequential processing in Steps 3–9.
 
 ---
 
@@ -78,6 +104,7 @@ Read `[owner-folder]/solvers/[solver-slug].md` and extract:
 - Existing fit assessment (if any — from scouting)
 - Integration feasibility
 - Risks and open questions
+- `Data confidence` field
 
 Read `[owner-folder]/challenges/[challenge-slug].md` and extract:
 - Challenge title and problem statement
@@ -88,16 +115,49 @@ Read `[owner-folder]/challenges/[challenge-slug].md` and extract:
 
 Use both documents as the primary basis for scoring. Do not ask the operator to re-enter information already present in these files.
 
+**Data confidence check:** If the solver profile has `Data confidence: Low`, alert the operator before proceeding:
+
+```
+⚠ Data confidence: Low — [Solver Name]
+
+This profile was generated with unconfirmed or estimated data. The fit assessment
+will be based on limited information and scores should be treated as indicative only.
+
+Proceed anyway? (yes / no)
+```
+
+If the operator proceeds, note the low confidence in the fit assessment file and apply conservative scoring where data gaps exist.
+
 ---
 
-## Step 4 — Prompt for unknowns
+## Step 4 — Collect additional context
 
-If any field critical to scoring is marked `_To be validated_` or is missing, ask the operator to fill in the gaps before proceeding:
+This step has two parts: importing interaction context and filling in missing fields.
+
+### Part A — Interaction context
+
+Always ask, regardless of whether the solver profile is complete:
 
 ```
 Fit Check — [Solver Name] × [Challenge Title]
 
-Before scoring, please clarify the following:
+Has there been any direct interaction with this solver?
+(call, presentation, demo, video call, email exchange, meeting notes)
+
+If yes, paste or summarize the relevant content here — transcripts, deck highlights,
+pricing discussed, commitments made, concerns raised.
+
+If no, type "none" to proceed with public profile only.
+```
+
+Wait for the operator's response. If interaction context is provided, extract and incorporate it into the scoring in Step 5. Note the source in the fit assessment file (e.g., "Score informed by call transcript dated [date]").
+
+### Part B — Missing fields
+
+If any field critical to scoring is still marked `_To be validated_` or missing after accounting for the interaction context provided:
+
+```
+A few fields remain unconfirmed:
 
 1. [Field] — [Why this affects the score]
 2. [Field] — [Why this affects the score]
@@ -105,13 +165,15 @@ Before scoring, please clarify the following:
 Provide what you know. Leave blank if unknown — it will be noted as a risk.
 ```
 
-Wait for the operator's response. If all critical fields are present, skip this step.
+Wait for the operator's response. If all critical fields are now present, proceed to scoring.
 
 ---
 
 ## Step 5 — Score each dimension
 
-Using all available context, score each dimension from 1 to 5 and write a 2–3 sentence rationale.
+**Note on scouting scores:** The solver profile may contain a preliminary fit assessment generated during `/vpm-scout`. Those scores are indicative — based on public information only, without direct contact or challenge-specific analysis. The scores produced in this step replace them as the authoritative evaluation. The fit assessment file created in Step 8 is the definitive record.
+
+Using all available context — solver profile, challenge file, and any interaction context provided in Step 4 — score each dimension from 1 to 5 and write a 2–3 sentence rationale.
 
 ### Scoring guide
 
@@ -168,7 +230,40 @@ Create `[owner-folder]/solvers/[solver-slug]-[challenge-slug]-fit.md` using the 
 
 ---
 
-## Step 9 — Update challenge file
+## Step 9 — Create decision log entry
+
+Create `[owner-folder]/decisions/[YYYY-MM-DD]-[solver-slug]-[challenge-slug]-[outcome].md` where `[outcome]` is one of: `advance`, `conditional`, or `reject`.
+
+Use this template:
+
+```markdown
+# Decision — [Solver Name] × [Challenge Title] — [Outcome]
+
+| Field | Value |
+|---|---|
+| Program | [program-slug] |
+| Owner | [org-slug or unit-slug] |
+| Type | fit-assessment |
+| Initiative | [solver-slug] × [challenge-slug] |
+| Date | [YYYY-MM-DD] |
+| Outcome | [advance / conditional / reject] |
+| Overall fit score | [X.X]/5 |
+| Assessor | [Operator name or "Claude / operator"] |
+
+## Summary
+
+[2–3 sentences explaining the decision. Reference the overall score, the most decisive dimension, and the primary rationale.]
+
+## Reference
+
+Fit assessment: `[owner-folder]/solvers/[solver-slug]-[challenge-slug]-fit.md`
+```
+
+In batch mode, create one decision log entry per solver assessed.
+
+---
+
+## Step 10 — Update challenge file
 
 Open `[owner-folder]/challenges/[challenge-slug].md` and update the **Linked Solvers** section.
 
@@ -180,7 +275,9 @@ Find the row for `[solver-slug]` and update its status to `fit-assessed`. If no 
 
 ---
 
-## Step 10 — Confirm and suggest next step
+## Step 11 — Confirm and suggest next step
+
+### Single solver
 
 ```
 Fit check completed — [Solver Name] × [Challenge Title]
@@ -199,7 +296,8 @@ Fit check completed — [Solver Name] × [Challenge Title]
 
 Files created or updated:
   [owner-folder]/solvers/[solver-slug]-[challenge-slug]-fit.md
-  [owner-folder]/challenges/[challenge-slug].md — evaluation status updated
+  [owner-folder]/decisions/[YYYY-MM-DD]-[solver-slug]-[challenge-slug]-[outcome].md
+  [owner-folder]/challenges/[challenge-slug].md — status → fit-assessed
 
 Next step: run /vpm-pilot-launch to design and initiate a pilot with this solver.
 ```
@@ -207,6 +305,39 @@ Next step: run /vpm-pilot-launch to design and initiate a pilot with this solver
 If the recommendation is **Reject**, suggest returning to `/vpm-scout` to identify alternative solvers.
 
 If the recommendation is **Conditional**, list the open conditions and suggest resolving them before running `/vpm-pilot-launch`.
+
+---
+
+### Batch mode
+
+After all solvers in the batch have been assessed, display a comparative ranking:
+
+```
+Fit check completed — [N] solvers × [Challenge Title]
+
+  Challenge:  [challenge-slug]
+  Owner:      [org-slug or unit-slug]
+
+  Ranking:
+  ─────────────────────────────────────────────────────────
+  #  Solver              Strategic  Technical  Operational  Overall  Recommendation
+  1  [solver-slug]       [x]/5      [x]/5      [x]/5        [x.x]/5  Advance to pilot
+  2  [solver-slug]       [x]/5      [x]/5      [x]/5        [x.x]/5  Conditional
+  3  [solver-slug]       [x]/5      [x]/5      [x]/5        [x.x]/5  Reject
+  ...
+
+  Files created:
+    [owner-folder]/solvers/[solver-slug-1]-[challenge-slug]-fit.md
+    [owner-folder]/solvers/[solver-slug-2]-[challenge-slug]-fit.md
+    ...
+    [owner-folder]/decisions/[YYYY-MM-DD]-[solver-slug-1]-[challenge-slug]-[outcome].md
+    [owner-folder]/decisions/[YYYY-MM-DD]-[solver-slug-2]-[challenge-slug]-[outcome].md
+    ...
+  Challenge file updated:
+    [owner-folder]/challenges/[challenge-slug].md — all assessed solvers → fit-assessed
+
+Next step: run /vpm-pilot-launch with the top-ranked solver(s) recommended to Advance or Conditional.
+```
 
 ---
 
@@ -301,6 +432,7 @@ Score: [1–5] — [Label]
 - [ ] Conditional recommendations include explicit, actionable conditions.
 - [ ] The challenge file was updated with the new evaluation status.
 - [ ] Fit file created at `[owner-folder]/solvers/`.
+- [ ] Decision log entry created at `[owner-folder]/decisions/`.
 - [ ] The confirmation summary was shown to the operator.
 
 ---
