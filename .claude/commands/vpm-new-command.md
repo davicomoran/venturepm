@@ -153,7 +153,32 @@ Insert it after the last existing command row, before the italicized note.
 
 ---
 
-## Step 5 — Confirm and suggest next step
+## Step 5 — Update vpm-init command checklist
+
+Open `.claude/commands/vpm-init.md` and add the new command to the **Commands** checklist in Step 1:
+
+```
+- `vpm-[command-name].md`
+```
+
+Also add it to the dashboard display template in Step 3:
+
+```
+  /vpm-[command-name]        [present / MISSING]
+```
+
+And add a row to the operator prompt table in Step 4:
+
+```
+| If the operator wants to… | Suggest |
+| [What this command does] | `/vpm-[command-name]` |
+```
+
+Update the quality criteria count: change "All [N] expected commands" to `[N+1]`.
+
+---
+
+## Step 6 — Confirm and suggest next step
 
 Display a confirmation summary:
 
@@ -165,6 +190,11 @@ New command created successfully.
 
 CLAUDE.md updated:
   Command Reference table — 1 row added.
+
+vpm-init.md updated:
+  Command checklist — 1 entry added.
+  Dashboard template — 1 row added.
+  Operator prompt table — 1 row added.
 
 The command is ready to use. Run /vpm-[command-name] to execute it for the first time.
 ```

@@ -443,11 +443,11 @@ The pilot will be paused or stopped early if any of the following occur:
 
 ## Open Blockers
 
-| Blocker | Type | Likelihood | Status |
+| ID | Type | Severity | Status |
 |---|---|---|---|
-| [Blocker description] | [Type] | High | open |
+| [B-00N] | [type] | high | open |
 
-_See `[owner-folder]/blockers/` for full blocker details._
+_See `[owner-folder]/blockers/[challenge-slug]-blockers.md` for full blocker details._
 
 ---
 

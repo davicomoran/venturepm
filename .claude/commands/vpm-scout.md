@@ -71,7 +71,7 @@ Read the following files and extract the fields listed:
 **`programs/[program-slug]/program-context.md`**
 - Mode, geography, domains, solver eligibility criteria
 
-**`[batch-slug]/batch-context.md`** (if batch exists)
+**`programs/[program-slug]/batches/[batch-slug]/batch-context.md`** (if batch exists)
 - Any overrides to mode, geography, or eligibility
 
 **`[owner-folder]/challenges/[challenge-slug].md`**

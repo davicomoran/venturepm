@@ -183,7 +183,7 @@ If the section already exists, append the new row without removing existing entr
 
 ---
 
-## Step 9 — Confirm and suggest next step
+## Step 8 — Confirm and suggest next step
 
 ```
 Blocker logged — [Initiative slug]
