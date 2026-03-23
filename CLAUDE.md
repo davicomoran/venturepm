@@ -160,6 +160,8 @@ The folder structure mirrors the organizational hierarchy. Entities are nested i
 - `organization` → `org-context.md`
 - `unit` → `unit-context.md`
 
+**Entity file frontmatter:** Challenge, solver, and pilot files carry a YAML frontmatter block at the top of the file. Claude uses this block for fast status scanning (e.g., during `/vpm-init`) without reading the full file body. Always keep frontmatter fields in sync with the table fields in the file body. Blocker files are append-only logs (table format) and do not use frontmatter.
+
 **Operational subdirectories** (`challenges/`, `solvers/`, `pilots/`, `blockers/`, `decisions/`) are created only at the lowest active level:
 - `organization` with no units → gets operational subdirectories
 - `unit` → always gets operational subdirectories

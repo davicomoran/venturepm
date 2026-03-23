@@ -274,8 +274,14 @@ After logging blockers, list the IDs in the confirmation summary.
 
 ## Step 10 — Update challenge status
 
-Open `[owner-folder]/challenges/[challenge-slug].md` and update the `Status` field in the `## Challenge Overview` table from `in-evaluation` to `in-pilot`:
+Open `[owner-folder]/challenges/[challenge-slug].md` and update both the frontmatter and the `## Challenge Overview` table:
 
+In the frontmatter block at the top of the file:
+```yaml
+status: in-pilot
+```
+
+In the `## Challenge Overview` table:
 ```markdown
 | Status | in-pilot |
 ```
@@ -325,6 +331,17 @@ Next step: run /vpm-report to generate a status report for this program or pilot
 ## Output template
 
 ```markdown
+---
+slug: [solver-slug]-[challenge-slug]-pilot
+type: pilot
+status: in-design
+solver: [solver-slug]
+challenge: [challenge-slug]
+owner: [org-slug or unit-slug]
+program: [program-slug]
+created: [YYYY-MM-DD]
+---
+
 # Pilot Design — [Solver Name] × [Challenge Title]
 
 | Field | Value |

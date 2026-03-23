@@ -312,6 +312,16 @@ If the operator chooses to profile anyway, note the eligibility flag in the Inte
 Pre-fill every field you can infer from your knowledge of the company. Mark any field you cannot confidently fill as `_To be validated._`. Do not invent specific client names or financial figures.
 
 ```markdown
+---
+slug: [solver-slug]
+type: solver
+status: in-evaluation
+challenge: [challenge-slug]
+owner: [org-slug or unit-slug]
+program: [program-slug]
+added: [YYYY-MM-DD]
+---
+
 # [Solver Name] — Solver Profile
 
 ## Company Overview
@@ -463,8 +473,14 @@ Open `[owner-folder]/challenges/[challenge-slug].md` and make the following upda
 | [solver-slug] | [Overall fit score] | in-evaluation |
 ```
 
-**2. Challenge status** — in the `## Challenge Overview` table, update the `Status` field from `active` to `in-evaluation`:
+**2. Challenge status** — update both the frontmatter and the `## Challenge Overview` table:
 
+In the frontmatter block at the top of the file:
+```yaml
+status: in-evaluation
+```
+
+In the `## Challenge Overview` table:
 ```markdown
 | Status | in-evaluation |
 ```

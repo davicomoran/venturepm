@@ -1,12 +1,13 @@
 # VenturePM
 
-**The open-source AI operating system for Venture Client and Venture Building programs.**
+**The open-source operating system for corporate innovation programs.**
+**Methodology-first. AI-operated. Built to run.**
 
 ---
 
-VenturePM is a structured methodology, vocabulary, and toolset for running corporate innovation programs — operated through Claude as an AI co-pilot. It manages pipeline state, surfaces blockers, tracks decisions, and guides program managers through every phase.
+VenturePM is a complete methodology, vocabulary, and pipeline for running corporate innovation programs — codified as structured files and executable commands, operated today through Claude as an AI co-pilot.
 
-It is built for innovation units, venture studios, accelerators, and any organization that systematically works with startups or builds new ventures internally. No vendor lock-in. No proprietary platform. Just structured files, standard commands, and a co-pilot that knows the methodology.
+It is built for innovation units, venture studios, accelerators, and any organization that systematically works with startups or builds new ventures internally. No third-party dependency, no lock-in. The methodology belongs to whoever runs it.
 
 ---
 
@@ -22,8 +23,8 @@ The result is a program manager who runs more cycles, makes better-documented de
 
 VenturePM is different:
 
-- **Methodology-first.** Built around the Venture Client model and Venture Building principles. The process is the product.
-- **File-native.** Program state lives in Markdown files you own, version, and audit. No database, no SaaS dependency.
+- **Methodology-first.** The process is the product. The pipeline, vocabulary, and decision logic are defined independently — Claude is the current runtime, not the boundary of what this can become.
+- **File-native.** Program state lives in Markdown files you own, version, and audit. No third-party dependency, no lock-in.
 - **AI-operated.** Claude reads your program context, applies the methodology, and takes structured action — not just chat.
 - **Open.** Fork it, extend it, adapt it. The OS belongs to whoever runs it.
 
@@ -118,6 +119,18 @@ program
 | `unit` | No | A sub-team or business unit within an organization that owns specific challenges. |
 
 Challenges are always assigned to the lowest active level in the hierarchy.
+
+---
+
+## Methodology
+
+VenturePM is grounded in Venture Client theory and corporate innovation practice. It draws from direct program experience and the following references:
+
+- Gimmy, G. & Moosmayer, D. — *The Venture Client Model* (foundational framework for corporate-startup collaboration through real procurement and pilots)
+- Viki, T., Toma, D. & Gons, E. — *The Corporate Startup* (innovation pipeline design and governance in large organizations)
+- Ries, E. — *The Lean Startup* (hypothesis-driven pilots and validated learning)
+
+The methodology is intentionally generic. It does not encode assumptions about any specific industry, geography, or institution.
 
 ---
 

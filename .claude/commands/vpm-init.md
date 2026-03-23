@@ -1,14 +1,13 @@
 # /vpm-init
 
-Initializes a VenturePM session. Displays a complete project status dashboard: OS health (commands and infrastructure), the full operational cycle, active programs with pipeline status, and open blockers. Entry point for every working session.
+Initializes a VenturePM session. Displays a complete project status dashboard: OS health (commands), the full operational cycle by phase, active programs with structure and pipeline status, and open blockers. Entry point for every working session.
 
 ---
 
-## Step 1 — Scan OS infrastructure
+## Step 1 — Scan OS commands
 
-Check for the presence of the following files and directories. Record each as present or missing:
+Check for the presence of the following files in `.claude/commands/`. Record each as present or missing:
 
-**Commands** — check `.claude/commands/` for each expected file:
 - `vpm-init.md`
 - `vpm-setup-program.md`
 - `vpm-setup-batch.md`
@@ -23,10 +22,6 @@ Check for the presence of the following files and directories. Record each as pr
 - `vpm-blocker-check.md`
 - `vpm-report.md`
 
-**Infrastructure** — check for:
-- `README.md` (root)
-- `docs/` directory (any content)
-
 ---
 
 ## Step 2 — Scan programs directory
@@ -38,6 +33,7 @@ For each subfolder found under `programs/`, look for a `program-context.md` file
 For each program found, extract:
 - Program name and mode
 - Program status (active / paused / completed)
+- Whether the program has batches: count subdirectories under `batches/` and collect their slugs. If no `batches/` directory exists, treat batch count as 0.
 
 Then count pipeline entities per program by scanning the full nested hierarchy:
 
@@ -50,13 +46,15 @@ programs/[program]/batches/[batch]/orgs/[org]/challenges/
 programs/[program]/batches/[batch]/orgs/[org]/units/[unit]/challenges/
 ```
 
-**Challenges** — in all `challenges/` directories found: count `.md` files = active challenges
+All entity files (challenges, solvers, pilots) now carry a YAML frontmatter block at the top of the file. Use this block — not the Markdown table body — for status detection. Frontmatter fields are lowercase (`status`, `type`, `slug`, etc.).
 
-**Solvers** — in all `solvers/` directories found: count files not ending in `-fit.md` = solver profiles; count those with `Status: in-evaluation`
+**Challenges** — in all `challenges/` directories found: count `.md` files where frontmatter `type: challenge` and `status` is not `completed` = active challenges
 
-**Pilots** — in all `pilots/` directories found: count files with `Status: active` or `Status: in-design`
+**Solvers** — in all `solvers/` directories found: count files where frontmatter `type: solver` = solver profiles (this naturally excludes `-fit.md` files which have no such frontmatter); count those where `status: in-evaluation`
 
-**Blockers** — in all `blockers/` directories found: for each `[challenge-slug]-blockers.md` file, read the table and count rows where the `Status` column is `open` or `in-progress`; collect their `Type` values
+**Pilots** — in all `pilots/` directories found: count files where frontmatter `type: pilot` and `status: active` or `status: in-design` = pilots in progress
+
+**Blockers** — in all `blockers/` directories found: for each `[challenge-slug]-blockers.md` file, read the Markdown table and count rows where the `Status` column value is `open` or `in-progress`; collect their `Type` values. Blocker files do not use frontmatter — they are append-only logs.
 
 If a directory does not exist, treat its count as 0.
 
@@ -74,45 +72,41 @@ Display the complete dashboard in this format:
 
 ── OS COMMANDS ─────────────────────────
 
-  /vpm-init               [present / MISSING]
-  /vpm-setup-program      [present / MISSING]
-  /vpm-setup-batch        [present / MISSING]
-  /vpm-setup-org          [present / MISSING]
-  /vpm-setup-unit         [present / MISSING]
-  /vpm-new-command        [present / MISSING]
-  /vpm-challenge-workshop [present / MISSING]
-  /vpm-scout              [present / MISSING]
-  /vpm-fit-check          [present / MISSING]
-  /vpm-pilot-launch       [present / MISSING]
-  /vpm-pilot-review       [present / MISSING]
-  /vpm-blocker-check      [present / MISSING]
-  /vpm-report             [present / MISSING]
-
-── PROJECT INFRASTRUCTURE ──────────────
-
-  README.md              [present / missing]
-  docs/                  [present / missing]
+  /vpm-init               [present / MISSING]   Initialize session dashboard
+  /vpm-setup-program      [present / MISSING]   Create a new program
+  /vpm-setup-batch        [present / MISSING]   Add a batch to a program
+  /vpm-setup-org          [present / MISSING]   Add an organization
+  /vpm-setup-unit         [present / MISSING]   Add a unit to an org
+  /vpm-challenge-workshop [present / MISSING]   Define and prioritize challenges
+  /vpm-scout              [present / MISSING]   Source solvers for a challenge
+  /vpm-fit-check          [present / MISSING]   Evaluate solver-challenge fit
+  /vpm-pilot-launch       [present / MISSING]   Design and launch a pilot
+  /vpm-pilot-review       [present / MISSING]   Activate, check, or close a pilot
+  /vpm-blocker-check      [present / MISSING]   Diagnose and classify a blocker
+  /vpm-report             [present / MISSING]   Generate an executive report
+  /vpm-new-command        [present / MISSING]   Create a new OS command
 
 ── OPERATIONAL CYCLE ───────────────────
 
-  /vpm-setup-program
-    └─ /vpm-setup-batch  (optional)
-         └─ /vpm-setup-org
-              └─ /vpm-setup-unit  (optional)
-                   └─ /vpm-challenge-workshop
-                        └─ /vpm-scout
-                             └─ /vpm-fit-check
-                                  └─ /vpm-pilot-launch
-                                       └─ /vpm-pilot-review
-                                            ├─ /vpm-blocker-check  (any phase)
-                                            └─ /vpm-report
-                                                 └─ /vpm-challenge-workshop (next cycle)
+  SETUP       /vpm-setup-program → /vpm-setup-batch (opt)
+                → /vpm-setup-org → /vpm-setup-unit (opt)
+
+  CHALLENGES  /vpm-challenge-workshop
+
+  SCOUTING    /vpm-scout
+
+  EVALUATION  /vpm-fit-check
+
+  PILOTS      /vpm-pilot-launch → /vpm-pilot-review
+
+  ANY PHASE   /vpm-blocker-check   /vpm-report
 
 ── ACTIVE PROGRAMS ─────────────────────
 
   Programs active: [N]
 
   [Program Name] — [venture-client / venture-building / hybrid]
+    Batches:     [N]  ([batch-slug-1], [batch-slug-2])
     Challenges:  [N] active
     Evaluation:  [N] solvers in evaluation
     Pilots:      [N] in progress
@@ -131,9 +125,9 @@ What would you like to work on?
 **Formatting rules:**
 
 - Use today's date in the header.
-- In the OS Commands section, mark each file `present` if it exists in `.claude/commands/`, or `MISSING` (uppercase) if not.
-- In the Project Infrastructure section, mark each item `present` if it exists, or `missing` (lowercase) if not.
+- In the OS Commands section, mark each file `present` if it exists in `.claude/commands/`, or `MISSING` (uppercase) if not. Always show the description alongside the status.
 - In the Active Programs section, list programs alphabetically by slug. Count only `active` programs in the headline; include `paused` and `completed` programs with their label appended — e.g., `venture-client (paused)`.
+- Show the `Batches:` line only if the program has at least one batch. List batch slugs in parentheses. If no batches exist, omit the line entirely.
 - Only include `types:` on the Blockers line if there is at least one open blocker.
 - Pipeline counts are aggregated across all orgs, batches, and units within the program.
 - If `programs/` is empty or does not exist, replace the Active Programs section with:
@@ -171,11 +165,11 @@ After displaying the dashboard, wait for the operator's response. Based on their
 
 ## Quality criteria
 
-- [ ] OS infrastructure was scanned from actual files — not assumed from memory.
-- [ ] All 13 expected commands are listed with accurate present/MISSING status.
-- [ ] Both infrastructure items (README.md and docs/) are listed with accurate present/missing status.
-- [ ] The operational cycle is displayed as a visual tree including setup-batch and setup-unit.
+- [ ] OS commands were scanned from actual files — not assumed from memory.
+- [ ] All 13 expected commands are listed with accurate present/MISSING status and their description.
+- [ ] The operational cycle is displayed as a phase-based layout (not a tree).
 - [ ] Pipeline counts traverse the full nested hierarchy — not just program-level paths.
+- [ ] Batches line is shown only when the program has at least one batch; omitted otherwise.
 - [ ] Blocker types are listed only when at least one open blocker exists.
 - [ ] Programs with paused or completed status are shown but labeled.
 - [ ] Today's date appears in the dashboard header.

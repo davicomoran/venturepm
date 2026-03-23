@@ -143,7 +143,8 @@ Confirm or update the following:
 Wait for the operator's response.
 
 Update the pilot file:
-- Change `Status` from `in-design` to `active`
+- Change `status` in the frontmatter block from `in-design` to `active`
+- Change `Status` in the `## Pilot Design` table from `in-design` to `active`
 - Update `Start date` if confirmed or changed
 - Update any KPI baseline or target changes
 - Add a row to the pilot's Interaction Log
@@ -244,7 +245,8 @@ Wait for the operator's full response before proceeding.
 
 Open the pilot file and make the following updates:
 
-- Change `Status` to `completed`
+- Change `status` in the frontmatter block to `completed`
+- Change `Status` in the table to `completed`
 - Add `Close date: [YYYY-MM-DD]`
 - Add `Outcome: [scale / extend / stop]`
 - Add a `## Pilot Outcome` section:
@@ -278,14 +280,14 @@ Open the pilot file and make the following updates:
 [Scale: deployment scope and owner / Extend: new scope and timeline / Stop: re-scout or close challenge]
 ```
 
-Also update the challenge file based on the decision:
+Also update the challenge file based on the decision. For each update, change both the frontmatter `status` field and the `Status` row in the `## Challenge Overview` table:
 
 | Decision | Challenge status update |
 |---|---|
-| Scale | Update `Status` to `completed`; update Linked Pilots row to `completed` |
-| Extend | Keep `Status` as `in-pilot`; update Linked Pilots row to `extending`; note new timeline |
-| Stop (re-scout) | Update `Status` to `in-evaluation`; update Linked Pilots row to `stopped` |
-| Stop (close) | Update `Status` to `completed`; update Linked Pilots row to `stopped` |
+| Scale | `status: completed`; update Linked Pilots row to `completed` |
+| Extend | Keep `status: in-pilot`; update Linked Pilots row to `extending`; note new timeline |
+| Stop (re-scout) | `status: in-evaluation`; update Linked Pilots row to `stopped` |
+| Stop (close) | `status: completed`; update Linked Pilots row to `stopped` |
 
 ---
 

@@ -276,6 +276,15 @@ If a file already exists at that path, ask the operator whether to overwrite or 
 For each confirmed challenge, create `[owner-folder]/challenges/[challenge-slug].md` using the template below.
 
 ```markdown
+---
+slug: [challenge-slug]
+type: challenge
+status: active
+owner: [org-slug or unit-slug]
+program: [program-slug]
+created: [YYYY-MM-DD]
+---
+
 # [Challenge Title] — Challenge Profile
 
 ## Challenge Overview
