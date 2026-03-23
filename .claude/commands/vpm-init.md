@@ -56,7 +56,7 @@ programs/[program]/batches/[batch]/orgs/[org]/units/[unit]/challenges/
 
 **Pilots** — in all `pilots/` directories found: count files with `Status: active` or `Status: in-design`
 
-**Blockers** — in all `blockers/` directories found: count files with `Status: open` or `Status: in-progress`; collect their `Type` values
+**Blockers** — in all `blockers/` directories found: for each `[challenge-slug]-blockers.md` file, read the table and count rows where the `Status` column is `open` or `in-progress`; collect their `Type` values
 
 If a directory does not exist, treat its count as 0.
 

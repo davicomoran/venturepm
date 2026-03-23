@@ -87,16 +87,14 @@ For each owner-level entity found, read every file in its operational subdirecto
 - Decision outcome if completed (scale / extend / stop)
 - Open blockers referenced
 
-**blockers/** — For each blocker file, extract:
-- Title, type, severity, status, owner
+**blockers/** — For each `[challenge-slug]-blockers.md` file found, read the table and extract all rows where `Status` is `open` or `in-progress`:
+- ID, type, severity, status, owner
 - Initiative it is linked to
-- Date opened and target resolution date
-- Whether it falls within the reporting period
+- Date opened
+- Description and mitigation
 
-**decisions/** — For each decision file dated within the reporting period, extract:
-- Decision made, date, owner
-- Outcome (advance / reject / scale / extend / stop)
-- Rationale summary
+**decisions/** — For each `[challenge-slug]-decisions.md` file found, read the table and extract rows where the `Date` column falls within the reporting period:
+- Date, solver, type (fit-assessment / pilot-launch / pilot-close), outcome, summary, assessor
 
 ---
 
@@ -136,7 +134,7 @@ For each, write 2–3 sentences explaining what happened and why it matters.
 
 ## Step 6 — Identify top open blockers
 
-From the blocker files, select up to 3 open blockers ranked by severity (`high` first, then `medium`). For each, summarize:
+From the blocker tables, select up to 3 open blockers ranked by severity (`high` first, then `medium`). For each, summarize:
 - What is blocked
 - Why it matters
 - Current resolution status
@@ -296,25 +294,25 @@ to open or reprioritize challenges for the next cycle.
 
 ### High severity
 
-| Blocker | Type | Initiative | Owner | Opened | Target resolution |
+| ID | Type | Initiative | Owner | Opened | Description |
 |---|---|---|---|---|---|
-| [blocker-slug] | [type] | [initiative-slug] | [owner] | [date] | [date] |
+| [B-00N] | [type] | [initiative-slug] | [owner] | [date] | [Brief description] |
 
 ### Medium severity
 
-| Blocker | Type | Initiative | Owner | Opened | Target resolution |
+| ID | Type | Initiative | Owner | Opened | Description |
 |---|---|---|---|---|---|
-| [blocker-slug] | [type] | [initiative-slug] | [owner] | [date] | [date] |
+| [B-00N] | [type] | [initiative-slug] | [owner] | [date] | [Brief description] |
 
-_No low-severity blockers are surfaced in executive reports. See `programs/[program-slug]/blockers/` for full detail._
+_No low-severity blockers are surfaced in executive reports. See `[owner-folder]/blockers/[challenge-slug]-blockers.md` for full detail._
 
 ---
 
 ## Decisions This Period
 
-| Date | Decision | Initiative | Outcome | Owner |
-|---|---|---|---|---|
-| [YYYY-MM-DD] | [Description] | [initiative-slug] | [advance / reject / scale / extend / stop] | [owner] |
+| Date | Solver | Challenge | Type | Outcome | Summary |
+|---|---|---|---|---|---|
+| [YYYY-MM-DD] | [solver-slug] | [challenge-slug] | [fit-assessment / pilot-launch / pilot-close] | [advance / conditional / reject / launch / scale / extend / stop] | [1-sentence summary] |
 
 ---
 

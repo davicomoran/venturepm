@@ -249,45 +249,26 @@ Append one row for this pilot launch:
 
 ---
 
-## Step 9 — Create blocker entries for critical risks
+## Step 9 — Log critical risks as blockers
 
-For each risk in the fit assessment rated **High** likelihood, create a blocker file:
+For each risk in the fit assessment rated **High** likelihood, append a row to `[owner-folder]/blockers/[challenge-slug]-blockers.md`.
 
-File path: `[owner-folder]/blockers/[YYYY-MM-DD]-[solver-slug]-[risk-type].md`
-
-Use this structure:
+If the file does not exist, create it with this header:
 
 ```markdown
-# Blocker — [Risk description — short title]
+# Blocker Log — [Challenge Title]
 
-| Field | Value |
-|---|---|
-| Program | [program-slug] |
-| Owner | [org-slug or unit-slug] |
-| Related pilot | [solver-slug]-[challenge-slug]-pilot |
-| Type | [political / budget / technical / cultural / regulatory / operational] |
-| Likelihood | High |
-| Severity | high |
-| Status | open |
-| Owner | _To be assigned_ |
-| Opened | [YYYY-MM-DD] |
-
-## Description
-
-[Full risk description from the fit assessment.]
-
-## Mitigation
-
-[Mitigation from the fit assessment, or _To be defined_.]
-
-## Resolution log
-
-| Date | Update | By |
-|---|---|---|
-| [YYYY-MM-DD] | Blocker opened during pilot launch. | — |
+| ID | Opened | Initiative | Type | Severity | Status | Owner | Description | Mitigation |
+|---|---|---|---|---|---|---|---|---|
 ```
 
-After creating blocker files, list them in the confirmation summary.
+Assign each blocker an auto-incrementing ID (`B-001`, `B-002`, ...) based on the number of existing rows. Append one row per High-likelihood risk:
+
+```markdown
+| B-00N | [YYYY-MM-DD] | [solver-slug]-[challenge-slug]-pilot | [type] | high | open | _To be assigned_ | [Risk description from fit assessment] | [Mitigation from fit assessment or _To be defined_] |
+```
+
+After logging blockers, list the IDs in the confirmation summary.
 
 ---
 
@@ -330,9 +311,8 @@ Files created:
   [owner-folder]/pilots/[solver-slug]-[challenge-slug]-pilot.md
   [owner-folder]/decisions/[challenge-slug]-decisions.md — 1 row appended
 
-Blockers opened: [N] (if any)
-  [owner-folder]/blockers/[blocker-slug].md — [risk type]
-  ...
+Blockers logged: [N] (if any)
+  [owner-folder]/blockers/[challenge-slug]-blockers.md — [B-001: type, B-002: type, ...]
 
 Challenge updated:
   [owner-folder]/challenges/[challenge-slug].md — status → in-pilot; pilot linked
@@ -494,8 +474,8 @@ _See `[owner-folder]/blockers/` for full blocker details._
 - [ ] Fit assessment was read; Reject recommendations blocked progression.
 - [ ] Conditional recommendations required operator confirmation of resolved conditions.
 - [ ] Pilot design includes measurable success criteria and KPIs with baselines and targets.
-- [ ] All High-likelihood risks from the fit assessment were converted to blocker files.
-- [ ] Pilot and blocker files created at `[owner-folder]/pilots/` and `[owner-folder]/blockers/`.
+- [ ] All High-likelihood risks from the fit assessment were logged as blockers.
+- [ ] Pilot file created at `[owner-folder]/pilots/`; blockers appended to `[owner-folder]/blockers/[challenge-slug]-blockers.md`.
 - [ ] Decision log entry created at `[owner-folder]/decisions/`.
 - [ ] File paths follow slug conventions: lowercase, hyphen-separated.
 - [ ] Confirmation summary was shown to the operator.

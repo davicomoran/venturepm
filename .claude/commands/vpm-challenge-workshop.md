@@ -381,17 +381,17 @@ _Populated when a pilot is initiated._
 
 ## Blockers
 
-| Blocker | Type | Status | Owner |
-|---|---|---|---|
-| _None yet_ | — | — | — |
+_Populated by /vpm-blocker-check._
+
+See `[owner-folder]/blockers/[challenge-slug]-blockers.md` for the full blocker log.
 
 ---
 
 ## Decision Log
 
-| Date | Decision | Rationale |
-|---|---|---|
-| [Today's date] | Challenge formalized | [Workshop or document import] |
+_Populated by /vpm-fit-check, /vpm-pilot-launch, and /vpm-pilot-review._
+
+See `[owner-folder]/decisions/[challenge-slug]-decisions.md` for the full decision log.
 ```
 
 ---

@@ -142,35 +142,42 @@ Use these resolution patterns as guidance:
 
 ---
 
-## Step 6 — Derive blocker slug and file path
+## Step 6 — Log blocker
 
-Derive the blocker slug: `[YYYY-MM-DD]-[initiative-slug]-[primary-type]`
+Open `[owner-folder]/blockers/[challenge-slug]-blockers.md`.
 
-Use today's date in YYYY-MM-DD format.
+If the file does not exist, create it with this header:
 
-File path: `[owner-folder]/blockers/[blocker-slug].md`
+```markdown
+# Blocker Log — [Challenge Title]
 
-If a blocker file already exists at that path, append a counter: `[blocker-slug]-2.md`
+| ID | Opened | Initiative | Type | Severity | Status | Owner | Description | Mitigation |
+|---|---|---|---|---|---|---|---|---|
+```
+
+Assign the next auto-incrementing ID (`B-001`, `B-002`, ...) based on existing rows. Append one row:
+
+```markdown
+| B-00N | [YYYY-MM-DD] | [initiative-type]/[initiative-slug] | [type] | [high / medium / low] | open | [Owner name or _To be assigned_] | [Description] | [Mitigation or _To be defined_] |
+```
+
+**Updating an existing blocker:** If the operator is reporting a status change on a previously logged blocker (e.g., resolved, owner assigned), edit the existing row in place rather than appending a new one.
 
 ---
 
-## Step 7 — Generate blocker file
+## Step 7 — Add resolution note to initiative file
 
-Create `[owner-folder]/blockers/[blocker-slug].md` using the template below.
-
----
-
-## Step 8 — Update initiative file
-
-Open the initiative file and add or update a **Blockers** section:
+Open the initiative file and update or add an **Open Blockers** reference:
 
 ```markdown
 ## Open Blockers
 
-| Blocker | Type | Severity | Status |
+| ID | Type | Severity | Status |
 |---|---|---|---|
-| [blocker-slug] | [type] | [high / medium / low — severity] | open |
+| [B-00N] | [type] | [high / medium / low] | open |
 ```
+
+Reference the blocker log for full detail: `[owner-folder]/blockers/[challenge-slug]-blockers.md`
 
 If the section already exists, append the new row without removing existing entries.
 
@@ -184,6 +191,7 @@ Blocker logged — [Initiative slug]
   Program:    [program-slug]
   Owner:      [org-slug or unit-slug]
   Initiative: [type] / [initiative-slug]
+  ID:         [B-00N]
   Type:       [primary type] (+ [contributing type] if applicable)
   Severity:   [high / medium / low]
   Owner:      [Owner name or "To be assigned"]
@@ -195,7 +203,7 @@ Recommended next steps:
   3. [Action] — [Owner] — by [deadline]
 
 Files created or updated:
-  [owner-folder]/blockers/[blocker-slug].md
+  [owner-folder]/blockers/[challenge-slug]-blockers.md — 1 row appended (ID: B-00N)
   [owner-folder]/[type]/[initiative-slug].md — blocker reference added
 
 Next step: run /vpm-report to include this blocker in a stakeholder status report.
@@ -203,73 +211,28 @@ Next step: run /vpm-report to include this blocker in a stakeholder status repor
 
 ---
 
-## Output template
+## Output format
+
+Blockers are stored as rows in `[owner-folder]/blockers/[challenge-slug]-blockers.md`. The file is a running log — one row per blocker, status updated in place.
+
+**File header (created on first blocker):**
 
 ```markdown
-# Blocker — [Short title describing the blockage]
+# Blocker Log — [Challenge Title]
 
-| Field | Value |
-|---|---|
-| Program | [program-slug] |
-| Owner | [org-slug or unit-slug] |
-| Initiative type | [challenge / solver / pilot] |
-| Initiative | [initiative-slug] |
-| Type | [political / budget / technical / cultural / regulatory / operational] |
-| Contributing type | [secondary type, if applicable] |
-| Likelihood | [High / Medium / Low — probability this risk materializes, if known] |
-| Severity | [high / medium / low — impact if unresolved] |
-| Status | open |
-| Owner | [Name and role, or _To be assigned_] |
-| Opened | [YYYY-MM-DD] |
-| Target resolution | [YYYY-MM-DD or _To be defined_] |
-
----
-
-## Description
-
-[Full description of what is blocked, what has already been attempted, who is involved, and how long the situation has been unresolved. Written in plain language — this will be referenced in stakeholder reports.]
-
----
-
-## Evidence
-
-- [Specific data point, event, or observation that confirms this blocker is real]
-- [Another data point — e.g., "No response to data access request sent on YYYY-MM-DD"]
-- [Another data point — e.g., "Budget approval meeting cancelled twice without rescheduling"]
-
----
-
-## Root cause hypothesis
-
-[1–2 sentences identifying the most likely underlying cause. Distinguish between the symptom (what is observable) and the root cause (what is driving it).]
-
----
-
-## Recommended next steps
-
-| # | Action | Owner | Deadline |
-|---|---|---|---|
-| 1 | [Specific action] | [Name or role] | [Deadline] |
-| 2 | [Specific action] | [Name or role] | [Deadline] |
-| 3 | [Specific action] | [Name or role] | [Deadline] |
-
----
-
-## Escalation path
-
-If not resolved by [target resolution date]:
-- Escalate to: [Role or name — e.g., Executive Sponsor, Program Director]
-- Escalation method: [Meeting / Written request / Formal review]
-- Escalation trigger: [Specific condition — e.g., "No confirmed owner after 5 business days"]
-
----
-
-## Resolution log
-
-| Date | Update | By |
-|---|---|---|
-| [YYYY-MM-DD] | Blocker opened. | [Operator name or —] |
+| ID | Opened | Initiative | Type | Severity | Status | Owner | Description | Mitigation |
+|---|---|---|---|---|---|---|---|---|
 ```
+
+**Row format:**
+
+```markdown
+| B-001 | [YYYY-MM-DD] | [challenge/solver/pilot]/[initiative-slug] | [type] | [high/medium/low] | [open/in-progress/resolved] | [Owner or _To be assigned_] | [Description — what is blocked, root cause hypothesis, evidence] | [Mitigation or _To be defined_] |
+```
+
+**Updating a blocker:** edit the existing row directly — change `Status`, `Owner`, or `Mitigation` as the situation evolves. Do not append a duplicate row.
+
+The full diagnosis (recommended next steps, escalation path, resolution notes) is surfaced in the confirmation summary and in `/vpm-report` — not stored redundantly in the file.
 
 ---
 
@@ -280,7 +243,7 @@ If not resolved by [target resolution date]:
 - [ ] The blocker was classified using the standard taxonomy.
 - [ ] Severity was assessed using the defined criteria — not assigned arbitrarily.
 - [ ] Recommended next steps are specific: named owner, concrete action, and a deadline.
-- [ ] The blocker file was created at `[owner-folder]/blockers/`.
+- [ ] A row was appended to `[owner-folder]/blockers/[challenge-slug]-blockers.md` with an auto-incremented ID.
 - [ ] The initiative file was updated with a blocker reference.
 - [ ] Confirmation summary was shown with next steps clearly listed.
 

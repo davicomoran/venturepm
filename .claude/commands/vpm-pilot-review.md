@@ -196,7 +196,7 @@ Update the pilot file:
 - [Key update]
 - [Key update]
 
-**Open blockers:** [None / list of blocker slugs]
+**Open blockers:** [None / brief description of any open blockers]
 ```
 
 If new blockers were reported, prompt the operator to run `/vpm-blocker-check` for each.
@@ -286,12 +286,6 @@ Also update the challenge file based on the decision:
 | Extend | Keep `Status` as `in-pilot`; update Linked Pilots row to `extending`; note new timeline |
 | Stop (re-scout) | Update `Status` to `in-evaluation`; update Linked Pilots row to `stopped` |
 | Stop (close) | Update `Status` to `completed`; update Linked Pilots row to `stopped` |
-
-Add a row to the challenge's Decision Log:
-
-```markdown
-| [YYYY-MM-DD] | Pilot [Scale / Extend / Stop] — [Solver Name] | [1-sentence rationale] |
-```
 
 ---
 
