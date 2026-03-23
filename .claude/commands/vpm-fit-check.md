@@ -251,9 +251,19 @@ In batch mode, append one row per solver in ranking order.
 
 ---
 
-## Step 10 — Update challenge file
+## Step 10 — Update solver file and challenge file
 
-Open `[owner-folder]/challenges/[challenge-slug].md` and update the **Linked Solvers** section.
+**Solver file** — open `[owner-folder]/solvers/[solver-slug].md` and update the frontmatter `status` field based on the recommendation:
+
+| Recommendation | Frontmatter update |
+|---|---|
+| Advance to pilot | No change — keep `status: in-evaluation` |
+| Conditional | No change — keep `status: in-evaluation` |
+| Reject | Update to `status: rejected` |
+
+Only update the frontmatter block. Do not modify the file body.
+
+**Challenge file** — open `[owner-folder]/challenges/[challenge-slug].md` and update the **Linked Solvers** section.
 
 Find the row for `[solver-slug]` and update its status to `fit-assessed`. If no row exists, add one:
 
