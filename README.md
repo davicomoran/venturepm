@@ -92,8 +92,9 @@ All commands use the `/vpm-` prefix.
 | `/vpm-scout` | Scouting | Source and evaluate solvers for a challenge. Generates structured profiles with fit assessment. Advances challenge status to `in-evaluation`. |
 | `/vpm-fit-check` | Evaluation | Evaluate solver-challenge fit across strategic, technical, and operational-cultural dimensions. Output: scored assessment with recommendation (Advance / Conditional / Reject). |
 | `/vpm-pilot-launch` | Pilots | Co-design a pilot. Generates a complete pilot design document with KPIs, timeline, responsibilities, and escalation conditions. Advances challenge status to `in-pilot`. |
+| `/vpm-pilot-review` | Pilots | Manage the pilot lifecycle after launch: activate, record progress checks, and close with a Scale / Extend / Stop decision. Appends to the decision log at close. |
 | `/vpm-blocker-check` | Any | Diagnose why something is stalled. Classifies blocker type, assesses severity, assigns owner, recommends next steps. |
-| `/vpm-report` | Any | Generate a periodic executive report. Summarizes pipeline status, advances, blockers, decisions, and next steps. |
+| `/vpm-report` | Any | Generate a periodic executive report. Supports full-program or batch-scoped reports. Summarizes pipeline status, advances, blockers, decisions, and next steps. Saved to `programs/[slug]/reports/` on request. |
 | `/vpm-new-command` | OS | Create a new VenturePM command with standard structure and register it in `CLAUDE.md`. |
 
 ---
@@ -122,15 +123,19 @@ Challenges are always assigned to the lowest active level in the hierarchy.
 
 ## Roadmap
 
-**Current focus**
+**What's working now (v0.2)**
 
-- End-to-end pipeline tracking: challenge status auto-advances through `active → in-evaluation → in-pilot → closed` as commands are run
-- Cross-entity linking: batch-context lists orgs, org-context lists active challenges, challenge files link solvers and pilots
-- Methodology documentation in `docs/`
+The full venture-client pipeline is operational and end-to-end tested:
 
-**Future**
+- All 13 commands implemented and validated
+- Complete pipeline tracking: challenges advance through `active → in-evaluation → in-pilot → completed`
+- Centralized decision and blocker logs per challenge
+- Batch-scoped reporting with optional file save
+- Context inference between chained commands
 
-The roadmap beyond the current focus is intentionally undefined. VenturePM's direction should be shaped by the people running real programs on it — not by assumptions made in advance.
+**What's next**
+
+The roadmap beyond the current state is intentionally open. VenturePM's direction should be shaped by the people running real programs on it — not by assumptions made in advance.
 
 Have ideas? [Open an issue](https://github.com/davicomoran/venturepm/issues) or [start a discussion](https://github.com/davicomoran/venturepm/discussions). The best features will come from operators who use it.
 
