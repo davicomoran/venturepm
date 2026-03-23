@@ -49,7 +49,7 @@ One folder per entity. Every program, batch, organization, unit, challenge, solv
 
 ## Quick start
 
-**Requirements:** [Claude Code](https://claude.ai/code) with file access enabled.
+**Requirements:** [Claude Code](https://claude.ai/code) with file access enabled. Requires a Claude.ai Pro or Max subscription.
 
 ```bash
 # 1. Clone the repository
@@ -152,7 +152,7 @@ To contribute: fork the repo, make your changes, and open a pull request with a 
 
 ## Author
 
-**David Mora** — [github.com/davicomoran](https://github.com/davicomoran)
+**David Moran** — [github.com/davicomoran](https://github.com/davicomoran)
 
 ---
 

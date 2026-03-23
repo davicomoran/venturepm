@@ -1,6 +1,6 @@
 # VenturePM — CLAUDE.md
 
-**Author:** David Mora — [github.com/davicomoran](https://github.com/davicomoran)
+**Author:** David Moran — [github.com/davicomoran](https://github.com/davicomoran)
 **Repository:** [github.com/davicomoran/venturepm](https://github.com/davicomoran/venturepm)
 **License:** Open Source
 

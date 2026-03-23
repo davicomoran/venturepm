@@ -317,7 +317,7 @@ Open `[owner-folder]/challenges/[challenge-slug].md` and make two updates:
 | Status | in-evaluation |
 ```
 
-This indicates the challenge has entered the solver evaluation phase.
+**3. Owner context sync** — open `[owner-folder]/org-context.md` (or `unit-context.md`) and update the `Status` column for this challenge in `## Active Challenges` from `active` to `in-evaluation`. This keeps the org-context in sync with the challenge file.
 
 ---
 
@@ -338,6 +338,8 @@ Files created:
 
 Challenge file updated:
   [owner-folder]/challenges/[challenge-slug].md — [N] solver(s) linked; status → in-evaluation
+Owner context updated:
+  [owner-folder]/org-context.md — challenge status → in-evaluation
 
 Next step: run /vpm-fit-check to run a structured fit evaluation and produce a shortlist recommendation.
 ```
