@@ -177,6 +177,8 @@ venturepm/
 ├── programs/
 │   └── [program-slug]/
 │       ├── program-context.md
+│       ├── reports/                             # optional — created by /vpm-report on save
+│       │   └── [report-slug].md
 │       └── batches/
 │           └── [batch-slug]/
 │               ├── batch-context.md
@@ -193,10 +195,9 @@ venturepm/
 │                               ├── pilots/
 │                               │   └── [pilot-slug].md
 │                               ├── blockers/
-│                               │   └── [blocker-slug].md
+│                               │   └── [challenge-slug]-blockers.md
 │                               └── decisions/
-│                                   └── [YYYY-MM-DD]-[slug].md
-├── templates/
+│                                   └── [challenge-slug]-decisions.md
 └── docs/
 ```
 
@@ -206,6 +207,8 @@ venturepm/
 programs/
 └── [program-slug]/
     ├── program-context.md
+    ├── reports/                         # optional — created by /vpm-report on save
+    │   └── [report-slug].md
     └── orgs/
         └── [org-slug]/
             ├── org-context.md          # has_units: false → gets operational subdirs
@@ -213,7 +216,9 @@ programs/
             ├── solvers/
             ├── pilots/
             ├── blockers/
+            │   └── [challenge-slug]-blockers.md
             └── decisions/
+                └── [challenge-slug]-decisions.md
 ```
 
 ---
