@@ -7,7 +7,7 @@
 
 VenturePM is a complete methodology, vocabulary, and pipeline for running innovation programs — codified as structured files and executable commands, operated today through Claude as an AI co-pilot.
 
-It is built for venture studios, accelerators, innovation teams, and any organization that systematically works with startups or builds new ventures internally. No third-party dependency, no lock-in. The methodology belongs to whoever runs it.
+It is built for venture studios, innovation teams, and any organization that systematically works with startups or builds new ventures internally. No third-party dependency, no lock-in. The methodology belongs to whoever runs it.
 
 ---
 
@@ -136,7 +136,7 @@ The methodology is intentionally generic. It does not encode assumptions about a
 
 ## Roadmap
 
-**What's working now (v0.2)**
+**What's working now (v0.3)**
 
 The full venture-client pipeline is operational and end-to-end tested:
 
@@ -145,10 +145,14 @@ The full venture-client pipeline is operational and end-to-end tested:
 - Centralized decision and blocker logs per challenge
 - Batch-scoped reporting with optional file save
 - Context inference between chained commands
+- Scoped to venture-client mode — no false promises on unimplemented modes
 
 **What's next**
 
-The roadmap beyond the current state is intentionally open. VenturePM's direction should be shaped by the people running real programs on it — not by assumptions made in advance.
+- **Venture Building mode** — extend the pipeline for internal venture creation: hypothesis validation, team formation, and spin-off decisions.
+- **VenturePM for Accelerators** — a separate product for managing accelerator pipelines, built on the same foundation.
+
+The roadmap beyond this is intentionally open. VenturePM's direction should be shaped by the people running real programs on it — not by assumptions made in advance.
 
 Have ideas? [Open an issue](https://github.com/davicomoran/venturepm/issues) or [start a discussion](https://github.com/davicomoran/venturepm/discussions). The best features will come from operators who use it.
 
