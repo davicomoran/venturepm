@@ -280,7 +280,18 @@ Open the pilot file and make the following updates:
 [Scale: deployment scope and owner / Extend: new scope and timeline / Stop: re-scout or close challenge]
 ```
 
-Also update the challenge file based on the decision. For each update, change both the frontmatter `status` field and the `Status` row in the `## Challenge Overview` table:
+Also update the solver and challenge files based on the decision.
+
+**Solver file** — open `[owner-folder]/solvers/[solver-slug].md` and update the frontmatter `status` field:
+
+| Decision | Solver status update |
+|---|---|
+| Scale | `status: scaled` |
+| Extend | Keep `status: in-pilot` (pilot continues) |
+| Stop (re-scout) | `status: stopped` |
+| Stop (close) | `status: stopped` |
+
+**Challenge file** — update both the frontmatter `status` field and the `Status` row in the `## Challenge Overview` table:
 
 | Decision | Challenge status update |
 |---|---|
@@ -361,6 +372,7 @@ Pilot closed — [Solver Name] × [Challenge Title]
 
 Files updated:
   [owner-folder]/pilots/[solver-slug]-[challenge-slug]-pilot.md — status → completed
+  [owner-folder]/solvers/[solver-slug].md — status → [scaled / stopped / in-pilot]
   [owner-folder]/challenges/[challenge-slug].md — status → [completed / in-evaluation / in-pilot]
   [owner-folder]/decisions/[challenge-slug]-decisions.md — 1 row appended
 
@@ -380,6 +392,7 @@ Files updated:
 - [ ] For Mode A: pilot status updated to `active`; start date confirmed.
 - [ ] For Mode B: progress log entry added with KPI status and updates.
 - [ ] For Mode C: pilot outcome section added; pilot status updated to `completed`.
+- [ ] For Mode C: solver status updated based on the decision (scaled / stopped / in-pilot).
 - [ ] For Mode C: challenge status updated based on the decision logic table.
 - [ ] For Mode C: decision log entry created at `[owner-folder]/decisions/`.
 - [ ] Confirmation summary was shown to the operator.

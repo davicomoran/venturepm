@@ -272,7 +272,13 @@ After logging blockers, list the IDs in the confirmation summary.
 
 ---
 
-## Step 10 — Update challenge status
+## Step 10 — Update solver and challenge status
+
+Open `[owner-folder]/solvers/[solver-slug].md` and update the frontmatter `status` field to reflect that this solver is now in a pilot:
+
+```yaml
+status: in-pilot
+```
 
 Open `[owner-folder]/challenges/[challenge-slug].md` and update both the frontmatter and the `## Challenge Overview` table:
 
@@ -313,9 +319,11 @@ Pilot launched — [Solver Name] × [Challenge Title]
   Budget:      [Amount or TBD]
   Status:      in-design
 
-Files created:
+Files created/updated:
   [owner-folder]/pilots/[solver-slug]-[challenge-slug]-pilot.md
   [owner-folder]/decisions/[challenge-slug]-decisions.md — 1 row appended
+  [owner-folder]/solvers/[solver-slug].md — status → in-pilot
+  [owner-folder]/challenges/[challenge-slug].md — status → in-pilot
 
 Blockers logged: [N] (if any)
   [owner-folder]/blockers/[challenge-slug]-blockers.md — [B-001: type, B-002: type, ...]
