@@ -8,9 +8,9 @@
 
 ## What is VenturePM?
 
-VenturePM is an open-source operating system for managing corporate innovation programs. It provides a structured methodology, vocabulary, and toolset for running **Venture Client** and **Venture Building** programs — or any hybrid combination of both.
+VenturePM is an open-source operating system for managing innovation programs. It provides a structured methodology, vocabulary, and toolset for running **Venture Client** and **Venture Building** programs — or any hybrid combination of both.
 
-It is **program-agnostic**: it works for corporate innovation units, accelerators, venture studios, and any organization that systematically works with startups or builds new ventures internally. No vendor lock-in, no proprietary assumptions.
+It is **program-agnostic**: it works for accelerators, venture studios, innovation teams, and any organization that systematically works with startups or builds new ventures internally. No vendor lock-in, no proprietary assumptions.
 
 The OS is operated through Claude as an AI co-pilot that manages pipeline state, surfaces blockers, tracks decisions, and guides program managers through each phase.
 
@@ -50,7 +50,7 @@ program
 
 **These levels are functional positions, not fixed corporate titles.** Each level maps to whatever entity plays that role in a given program:
 
-- `organization` can be a holding company, a corporation, a cooperative, an NGO, a startup, a government agency, or any entity that acts as the challenger.
+- `organization` can be a holding company, a corporation, an NGO, a startup, a government agency, or any entity that acts as the challenger.
 - `unit` can be a business unit, a division, a department, a subsidiary, or any sub-entity within the organization where challenge ownership lives.
 
 What matters is which entity owns challenges at the bottom of the hierarchy — that determines where operational artefacts are created. The same program structure accommodates very different real-world configurations depending on how the challenger entity is structured.

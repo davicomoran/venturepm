@@ -1,13 +1,13 @@
 # VenturePM
 
-**The open-source operating system for corporate innovation programs.**
+**The open-source OS for innovation programs.**
 **Methodology-first. AI-operated. Built to run.**
 
 ---
 
-VenturePM is a complete methodology, vocabulary, and pipeline for running corporate innovation programs — codified as structured files and executable commands, operated today through Claude as an AI co-pilot.
+VenturePM is a complete methodology, vocabulary, and pipeline for running innovation programs — codified as structured files and executable commands, operated today through Claude as an AI co-pilot.
 
-It is built for innovation units, venture studios, accelerators, and any organization that systematically works with startups or builds new ventures internally. No third-party dependency, no lock-in. The methodology belongs to whoever runs it.
+It is built for venture studios, accelerators, innovation teams, and any organization that systematically works with startups or builds new ventures internally. No third-party dependency, no lock-in. The methodology belongs to whoever runs it.
 
 ---
 
@@ -15,9 +15,9 @@ It is built for innovation units, venture studios, accelerators, and any organiz
 
 The best product managers don't just move faster — they operate at a different level. With the right tools, context always loaded, and AI handling the structure, one PM can run what used to take a team.
 
-VenturePM applies that same logic to the people who run corporate venture and innovation programs.
+VenturePM applies that same logic to the people who run innovation programs.
 
-A Venture Client program manager juggles challenge workshops, solver pipelines, fit evaluations, pilot designs, and executive reporting — often across multiple organizations at once. Most of that work is structured and repeatable. VenturePM gives it a home: a methodology, a file system, and an AI co-pilot that knows the process, remembers the context, and takes structured action at every step.
+A program manager juggles challenge workshops, solver pipelines, fit evaluations, pilot designs, and executive reporting — often across multiple organizations at once. Most of that work is structured and repeatable. VenturePM gives it a home: a methodology, a file system, and an AI co-pilot that knows the process, remembers the context, and takes structured action at every step.
 
 The result is a program manager who runs more cycles, makes better-documented decisions, and carries institutional knowledge that doesn't walk out the door.
 
@@ -115,7 +115,7 @@ program
 |---|---|---|
 | `program` | Yes | The top-level innovation initiative. Has no parent. |
 | `batch` | No | A specific cohort or instance of a program. Inherits from the parent program but can override its own parameters. |
-| `organization` | Yes | The challenger entity — a company, cooperative, NGO, or any organization that defines challenges and evaluates solvers. Always the problem owner, never the solution provider. |
+| `organization` | Yes | The challenger entity — a company, NGO, or any organization that defines challenges and evaluates solvers. Always the problem owner, never the solution provider. |
 | `unit` | No | A sub-team or business unit within an organization that owns specific challenges. |
 
 Challenges are always assigned to the lowest active level in the hierarchy.
@@ -124,7 +124,7 @@ Challenges are always assigned to the lowest active level in the hierarchy.
 
 ## Methodology
 
-VenturePM is grounded in Venture Client theory and corporate innovation practice. It draws from direct program experience and the following references:
+VenturePM is grounded in Venture Client theory and innovation practice. It draws from direct program experience and the following references:
 
 - Gimmy, G. & Moosmayer, D. — *The Venture Client Model* (foundational framework for corporate-startup collaboration through real procurement and pilots)
 - Viki, T., Toma, D. & Gons, E. — *The Corporate Startup* (innovation pipeline design and governance in large organizations)

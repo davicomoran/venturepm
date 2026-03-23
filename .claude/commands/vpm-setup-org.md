@@ -75,7 +75,7 @@ Organization setup — manual entry
 
 1.  Organization name (legal or trading name)
 2.  Entity type — what kind of organization is this?
-    Examples: startup / corporation / holding / cooperative / public company / NGO / government / other
+    Examples: startup / corporation / holding / public company / NGO / government / other
 3.  Website (official URL)
 4.  Founded (year)
 5.  Headquarters (city, country)
@@ -111,7 +111,7 @@ Extraction map:
 | Field | What to look for |
 |---|---|
 | `name` | Legal or trading name of the organization |
-| `entity_type` | What kind of entity — startup, corporation, holding, cooperative, public company, NGO, government, other |
+| `entity_type` | What kind of entity — startup, corporation, holding, public company, NGO, government, other |
 | `website` | Official URL |
 | `founded` | Year founded |
 | `headquarters` | City and country |
@@ -277,7 +277,7 @@ Use this template for `org-context.md`:
 
 | Field | Value |
 |---|---|
-| Entity Type | [startup / corporation / holding / cooperative / public company / NGO / government / other] |
+| Entity Type | [startup / corporation / holding / public company / NGO / government / other] |
 | Website | [URL or TO CONFIRM] |
 | Founded | [Year or TO CONFIRM] |
 | Headquarters | [City, Country or TO CONFIRM] |
