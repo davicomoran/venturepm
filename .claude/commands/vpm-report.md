@@ -1,6 +1,6 @@
 # /vpm-report
 
-Generates a periodic executive report for a program. Reads all active files across challenges, solvers, pilots, blockers, and decisions to produce a structured summary covering headline metrics, pipeline status, key advances, open blockers, decisions made, learnings, and prioritized next steps.
+Generates a periodic executive report for a program or a specific batch within a program. Reads all active files across challenges, solvers, pilots, blockers, and decisions to produce a structured summary covering headline metrics, pipeline status, key advances, open blockers, decisions made, learnings, and prioritized next steps. Displaying the report in the conversation is always the primary output; saving it as a file is optional.
 
 ---
 
@@ -15,12 +15,17 @@ To generate a program report, please provide:
    The slug of the program to report on.
    Example: global-innovation-sprint
 
-2. Period
+2. Batch slug (optional)
+   Leave blank to report on the full program (all batches).
+   Provide a batch slug to scope the report to a single cohort.
+   Example: cohort-2026-q1
+
+3. Period
    The reporting period.
    Format: YYYY-MM for monthly, YYYY-QN for quarterly.
    Examples: 2026-03 / 2026-Q1
 
-3. Report audience (optional)
+4. Report audience (optional)
    Who will read this report?
    Examples: executive committee, program team, board, external partners
    Default: executive committee
@@ -30,7 +35,7 @@ Wait for the operator's response before proceeding.
 
 ---
 
-## Step 2 — Validate program
+## Step 2 — Validate program and batch
 
 Check that `programs/[program-slug]/program-context.md` exists.
 
@@ -47,11 +52,24 @@ Read `program-context.md` and extract:
 - Stated success metrics and targets
 - Any program-level notes or constraints
 
+If a batch slug was provided, also check that `programs/[program-slug]/batches/[batch-slug]/batch-context.md` exists.
+
+If not found, stop and display:
+
+```
+Batch "[batch-slug]" not found under program "[program-slug]".
+Run /vpm-setup-batch to initialize it first, or leave batch blank to report on the full program.
+```
+
 ---
 
 ## Step 3 — Scan and read all program files
 
-Traverse the full nested hierarchy under `programs/[program-slug]/` to find all owner-level entities. Owner-level entities are the folders that contain operational subdirectories (`challenges/`, `solvers/`, `pilots/`, `blockers/`, `decisions/`). The hierarchy may include:
+**Determine scan scope:**
+- No batch provided → traverse the full nested hierarchy under `programs/[program-slug]/`
+- Batch provided → traverse only `programs/[program-slug]/batches/[batch-slug]/`
+
+Owner-level entities are the folders that contain operational subdirectories (`challenges/`, `solvers/`, `pilots/`, `blockers/`, `decisions/`). The hierarchy may include:
 
 ```
 programs/[program]/orgs/[org]/
@@ -60,7 +78,7 @@ programs/[program]/batches/[batch]/orgs/[org]/
 programs/[program]/batches/[batch]/orgs/[org]/units/[unit]/
 ```
 
-For each owner-level entity found, read every file in its operational subdirectories. If a directory does not exist or is empty, note it as having no entries.
+For each owner-level entity found within the scope, read every file in its operational subdirectories. If a directory does not exist or is empty, note it as having no entries.
 
 **challenges/** — For each challenge file, extract:
 - Title, owner (org or unit), innovation horizon, priority score
@@ -164,41 +182,16 @@ Prioritize: unblocking high-severity blockers, advancing pilots close to a decis
 
 ---
 
-## Step 9 — Derive report slug and file path
+## Step 9 — Display report and offer to save
 
-Derive the report slug from the period:
-- Monthly: `[YYYY-MM]-report`
-- Quarterly: `[YYYY-QN]-report`
+Display the full report in the conversation using the output template below. Populate every section from the data and synthesis in previous steps. Do not leave placeholder text — if a section has no data, state that explicitly (e.g., "No pilots completed this period.").
 
-File path: `programs/[program-slug]/decisions/[report-slug].md`
-
-If a report file already exists at that path, notify the operator:
+After displaying the report, ask:
 
 ```
-A report for this period already exists: [path]
+Report generated — [Program name] / [Period][Batch label if applicable]
 
-Do you want to (A) overwrite it or (B) cancel?
-```
-
-Wait for the operator's response before proceeding.
-
----
-
-## Step 10 — Generate report file
-
-Create `programs/[program-slug]/decisions/[report-slug].md` using the template below.
-
-Populate every section from the data and synthesis in previous steps. Do not leave placeholder text — if a section has no data, state that explicitly (e.g., "No pilots completed this period.").
-
----
-
-## Step 11 — Confirm and suggest next step
-
-```
-Report generated — [Program name] / [Period]
-
-  Program:   [program-slug]
-  Period:    [period]
+  Scope:     [Full program / Batch: [batch-slug]]
   Audience:  [audience]
 
   Challenges:     [active] active / [completed] completed / [blocked] blocked
@@ -207,8 +200,50 @@ Report generated — [Program name] / [Period]
   Open blockers:  [N] ([high] high severity)
   Decisions:      [N] this period
 
-File created:
-  programs/[program-slug]/decisions/[report-slug].md
+Save this report as a file? (yes / no)
+```
+
+Wait for the operator's response before proceeding.
+
+---
+
+## Step 10 — Save report file (if requested)
+
+If the operator chose to save, derive the report slug and file path:
+
+**Report slug:**
+- No batch, monthly: `[YYYY-MM]-report`
+- No batch, quarterly: `[YYYY-QN]-report`
+- With batch, monthly: `[YYYY-MM]-[batch-slug]-report`
+- With batch, quarterly: `[YYYY-QN]-[batch-slug]-report`
+
+**File path:** `programs/[program-slug]/reports/[report-slug].md`
+
+If a file already exists at that path:
+
+```
+A report already exists at: [path]
+
+Do you want to (A) overwrite it or (B) skip saving?
+```
+
+Wait for the operator's response. Then write the file.
+
+If the operator chose not to save, skip this step entirely.
+
+---
+
+## Step 11 — Confirm and suggest next step
+
+```
+Report complete — [Program name] / [Period]
+
+  Scope:     [Full program / Batch: [batch-slug]]
+  Audience:  [audience]
+
+[If saved:]
+File saved:
+  programs/[program-slug]/reports/[report-slug].md
 
 Next step: share this report with stakeholders, then run /vpm-challenge-workshop
 to open or reprioritize challenges for the next cycle.
@@ -224,6 +259,7 @@ to open or reprioritize challenges for the next cycle.
 | Field | Value |
 |---|---|
 | Program | [program-slug] |
+| Batch | [batch-slug or — (full program)] |
 | Mode | [venture-client / venture-building / hybrid] |
 | Period | [period] |
 | Audience | [audience] |
@@ -353,14 +389,15 @@ _No low-severity blockers are surfaced in executive reports. See `[owner-folder]
 
 ## Quality criteria
 
-- [ ] All files in challenges/, solvers/, pilots/, blockers/, and decisions/ were read before generating the report.
+- [ ] Scan scope was correctly determined: full program if no batch provided, batch-only if batch provided.
+- [ ] All files in challenges/, solvers/, pilots/, blockers/, and decisions/ within scope were read before generating the report.
 - [ ] Headline metrics were computed from actual file data — not estimated.
 - [ ] Top advances and top blockers were selected and ranked by impact and severity.
 - [ ] Learnings are framed as actionable insights, not just observations.
 - [ ] Next steps are specific: named owner, concrete action, and a timeframe.
 - [ ] No placeholder text was left in the generated report — missing data is stated explicitly.
-- [ ] The report file was saved to `decisions/` with the correct slug format.
-- [ ] Confirmation summary was shown to the operator.
+- [ ] Report was displayed in the conversation before asking whether to save.
+- [ ] If saved: file path is `programs/[program-slug]/reports/[report-slug].md` with correct slug format (batch slug included if batch was provided).
 
 ---
 
@@ -371,16 +408,22 @@ Operator: /vpm-report
 
 Claude: To generate a program report, please provide:
         1. Program slug
-        2. Period
-        3. Report audience (optional)
+        2. Batch slug (optional)
+        3. Period
+        4. Report audience (optional)
 
 Operator: program: global-innovation-sprint
+          batch: cohort-2026-q1
           period: 2026-Q1
           audience: executive committee
 
-Claude: [Reads all program files, computes metrics, identifies advances and blockers,
-         synthesizes learnings, generates prioritized next steps, creates report file,
-         shows confirmation summary]
+Claude: [Reads all files within cohort-2026-q1, computes metrics, identifies advances
+         and blockers, synthesizes learnings, generates prioritized next steps, displays
+         report, asks whether to save]
+
+Operator: yes
+
+Claude: [Saves to programs/global-innovation-sprint/reports/2026-q1-cohort-2026-q1-report.md]
 ```
 
 ---
