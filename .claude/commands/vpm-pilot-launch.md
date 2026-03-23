@@ -230,33 +230,21 @@ Pre-fill every field from the context collected in previous steps. Mark any fiel
 
 ---
 
-## Step 8 — Create decision log entry
+## Step 8 — Update decision log
 
-Create `[owner-folder]/decisions/[YYYY-MM-DD]-[solver-slug]-[challenge-slug]-pilot-launch.md` using this template:
+Open `[owner-folder]/decisions/[challenge-slug]-decisions.md`. If the file does not exist, create it with this header:
 
 ```markdown
-# Decision — [Solver Name] × [Challenge Title] — Pilot Launch
+# Decision Log — [Challenge Title]
 
-| Field | Value |
-|---|---|
-| Program | [program-slug] |
-| Owner | [org-slug or unit-slug] |
-| Type | pilot-launch |
-| Initiative | [solver-slug] × [challenge-slug] |
-| Date | [YYYY-MM-DD] |
-| Outcome | launch |
-| Fit score | [X.X]/5 — [Advance to pilot / Conditional] |
-| Pilot owner | [Name, Role] |
-| Owner | [Operator name or "Claude / operator"] |
+| Date | Solver | Type | Outcome | Score | Summary | Assessor |
+|---|---|---|---|---|---|---|
+```
 
-## Summary
+Append one row for this pilot launch:
 
-[2–3 sentences describing what pilot was launched, the key scope commitments made, and the primary reason the solver was selected for this challenge.]
-
-## Reference
-
-Pilot design: `[owner-folder]/pilots/[solver-slug]-[challenge-slug]-pilot.md`
-Fit assessment: `[owner-folder]/solvers/[solver-slug]-[challenge-slug]-fit.md`
+```markdown
+| [YYYY-MM-DD] | [solver-slug] | pilot-launch | launch | [X.X]/5 | [1-sentence summary: what pilot was launched and primary reason solver was selected] | [Operator name or "Claude / operator"] |
 ```
 
 ---
@@ -340,7 +328,7 @@ Pilot launched — [Solver Name] × [Challenge Title]
 
 Files created:
   [owner-folder]/pilots/[solver-slug]-[challenge-slug]-pilot.md
-  [owner-folder]/decisions/[YYYY-MM-DD]-[solver-slug]-[challenge-slug]-pilot-launch.md
+  [owner-folder]/decisions/[challenge-slug]-decisions.md — 1 row appended
 
 Blockers opened: [N] (if any)
   [owner-folder]/blockers/[blocker-slug].md — [risk type]

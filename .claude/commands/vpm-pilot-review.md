@@ -295,36 +295,21 @@ Add a row to the challenge's Decision Log:
 
 ---
 
-## Step 6 — Create decision log entry (Mode C only)
+## Step 6 — Update decision log (Mode C only)
 
-Create `[owner-folder]/decisions/[YYYY-MM-DD]-[solver-slug]-[challenge-slug]-[outcome].md` where `[outcome]` is `scale`, `extend`, or `stop`.
+Open `[owner-folder]/decisions/[challenge-slug]-decisions.md`. If the file does not exist, create it with this header:
 
 ```markdown
-# Decision — [Solver Name] × [Challenge Title] — [Scale / Extend / Stop]
+# Decision Log — [Challenge Title]
 
-| Field | Value |
-|---|---|
-| Program | [program-slug] |
-| Owner | [org-slug or unit-slug] |
-| Type | pilot-close |
-| Initiative | [solver-slug]-[challenge-slug]-pilot |
-| Date | [YYYY-MM-DD] |
-| Outcome | [scale / extend / stop] |
-| Overall KPI result | [Met / Partially met / Not met] |
-| Owner | [Pilot owner name and role] |
+| Date | Solver | Type | Outcome | Score | Summary | Assessor |
+|---|---|---|---|---|---|---|
+```
 
-## Summary
+Append one row for this pilot close:
 
-[2–3 sentences explaining the decision. Reference specific KPI outcomes and the primary rationale for Scale, Extend, or Stop.]
-
-## Key Learnings
-
-- [Learning]
-- [Learning]
-
-## Reference
-
-Pilot design: `[owner-folder]/pilots/[solver-slug]-[challenge-slug]-pilot.md`
+```markdown
+| [YYYY-MM-DD] | [solver-slug] | pilot-close | [scale / extend / stop] | [KPI: Met / Partial / Not met] | [1-sentence rationale referencing the decisive KPI outcome] | [Pilot owner name or "Claude / operator"] |
 ```
 
 ---
@@ -381,7 +366,7 @@ Pilot closed — [Solver Name] × [Challenge Title]
 Files updated:
   [owner-folder]/pilots/[solver-slug]-[challenge-slug]-pilot.md — status → completed
   [owner-folder]/challenges/[challenge-slug].md — status → [completed / in-evaluation / in-pilot]
-  [owner-folder]/decisions/[YYYY-MM-DD]-[solver-slug]-[challenge-slug]-[outcome].md
+  [owner-folder]/decisions/[challenge-slug]-decisions.md — 1 row appended
 
 [If Scale:] Next step: run /vpm-report to include this pilot's outcome in the program report.
 [If Extend:] Next step: run /vpm-pilot-launch to design the extended pilot.

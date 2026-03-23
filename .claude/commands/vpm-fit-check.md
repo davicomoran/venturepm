@@ -230,36 +230,24 @@ Create `[owner-folder]/solvers/[solver-slug]-[challenge-slug]-fit.md` using the 
 
 ---
 
-## Step 9 — Create decision log entry
+## Step 9 — Update decision log
 
-Create `[owner-folder]/decisions/[YYYY-MM-DD]-[solver-slug]-[challenge-slug]-[outcome].md` where `[outcome]` is one of: `advance`, `conditional`, or `reject`.
-
-Use this template:
+Open `[owner-folder]/decisions/[challenge-slug]-decisions.md`. If the file does not exist, create it with this header:
 
 ```markdown
-# Decision — [Solver Name] × [Challenge Title] — [Outcome]
+# Decision Log — [Challenge Title]
 
-| Field | Value |
-|---|---|
-| Program | [program-slug] |
-| Owner | [org-slug or unit-slug] |
-| Type | fit-assessment |
-| Initiative | [solver-slug] × [challenge-slug] |
-| Date | [YYYY-MM-DD] |
-| Outcome | [advance / conditional / reject] |
-| Overall fit score | [X.X]/5 |
-| Assessor | [Operator name or "Claude / operator"] |
-
-## Summary
-
-[2–3 sentences explaining the decision. Reference the overall score, the most decisive dimension, and the primary rationale.]
-
-## Reference
-
-Fit assessment: `[owner-folder]/solvers/[solver-slug]-[challenge-slug]-fit.md`
+| Date | Solver | Type | Outcome | Score | Summary | Assessor |
+|---|---|---|---|---|---|---|
 ```
 
-In batch mode, create one decision log entry per solver assessed.
+Append one row per solver assessed:
+
+```markdown
+| [YYYY-MM-DD] | [solver-slug] | fit-assessment | [advance / conditional / reject] | [X.X]/5 | [1-sentence rationale referencing the decisive dimension or risk] | [Operator name or "Claude / operator"] |
+```
+
+In batch mode, append one row per solver in ranking order.
 
 ---
 
@@ -296,7 +284,7 @@ Fit check completed — [Solver Name] × [Challenge Title]
 
 Files created or updated:
   [owner-folder]/solvers/[solver-slug]-[challenge-slug]-fit.md
-  [owner-folder]/decisions/[YYYY-MM-DD]-[solver-slug]-[challenge-slug]-[outcome].md
+  [owner-folder]/decisions/[challenge-slug]-decisions.md — 1 row appended
   [owner-folder]/challenges/[challenge-slug].md — status → fit-assessed
 
 Next step: run /vpm-pilot-launch to design and initiate a pilot with this solver.
@@ -330,9 +318,7 @@ Fit check completed — [N] solvers × [Challenge Title]
     [owner-folder]/solvers/[solver-slug-1]-[challenge-slug]-fit.md
     [owner-folder]/solvers/[solver-slug-2]-[challenge-slug]-fit.md
     ...
-    [owner-folder]/decisions/[YYYY-MM-DD]-[solver-slug-1]-[challenge-slug]-[outcome].md
-    [owner-folder]/decisions/[YYYY-MM-DD]-[solver-slug-2]-[challenge-slug]-[outcome].md
-    ...
+    [owner-folder]/decisions/[challenge-slug]-decisions.md — [N] rows appended
   Challenge file updated:
     [owner-folder]/challenges/[challenge-slug].md — all assessed solvers → fit-assessed
 
