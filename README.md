@@ -1,6 +1,6 @@
 # VenturePM
 
-**The open-source OS for innovation programs.**
+**The open-source OS for corporate innovation programs.**
 **Methodology-first. AI-operated. Built to run.**
 
 ---
