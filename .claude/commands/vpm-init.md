@@ -105,7 +105,7 @@ Display the complete dashboard in this format:
 
   Programs active: [N]
 
-  [Program Name] — [venture-client / venture-building / hybrid]
+  [Program Name] — venture-client
     Batches:     [N]  ([batch-slug-1], [batch-slug-2])
     Challenges:  [N] active
     Evaluation:  [N] solvers in evaluation

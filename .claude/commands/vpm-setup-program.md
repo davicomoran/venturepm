@@ -32,7 +32,7 @@ Ask for the following in a single message:
 Program setup — manual entry
 
 1.  Program name
-2.  Mode: venture-client / venture-building / hybrid
+2.  Mode: venture-client
 3.  Description (1–3 sentences — purpose or mission)
 4.  Start date (YYYY-MM-DD or approximate)
 5.  End date (optional)
@@ -63,7 +63,7 @@ Extraction map:
 | Field | What to look for |
 |---|---|
 | `name` | Official name of the initiative or program |
-| `mode` | Whether the program buys from external solvers (venture-client), builds internally (venture-building), or both (hybrid) |
+| `mode` | How the program works — currently: venture-client (organization sources and pilots solutions from external startups) |
 | `description` | Program purpose, mission, or strategic intent |
 | `start_date` | Launch or kickoff date |
 | `end_date` | Planned end or review date |
@@ -160,7 +160,7 @@ Use this template:
 | Slug | [program-slug] |
 | Type | program |
 | Parent | null |
-| Mode | [venture-client / venture-building / hybrid] |
+| Mode | venture-client |
 | Status | active |
 | Created | [YYYY-MM-DD] |
 

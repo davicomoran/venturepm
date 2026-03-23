@@ -260,7 +260,7 @@ Use this template for `org-context.md`:
 | Slug | [org-slug] |
 | Type | organization |
 | Parent | [parent-slug] |
-| Mode | [venture-client / venture-building / hybrid / inherited from [parent-slug]] |
+| Mode | [venture-client / inherited from [parent-slug]] |
 | Status | active |
 | Has Units | false |
 | Created | [YYYY-MM-DD] |

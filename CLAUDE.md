@@ -8,7 +8,7 @@
 
 ## What is VenturePM?
 
-VenturePM is an open-source operating system for managing innovation programs. It provides a structured methodology, vocabulary, and toolset for running **Venture Client** and **Venture Building** programs — or any hybrid combination of both.
+VenturePM is an open-source operating system for managing innovation programs. It provides a structured methodology, vocabulary, and toolset for running **Venture Client** programs.
 
 It is **program-agnostic**: it works for accelerators, venture studios, innovation teams, and any organization that systematically works with startups or builds new ventures internally. No vendor lock-in, no proprietary assumptions.
 
@@ -23,8 +23,6 @@ VenturePM supports three modes. Each program declares its mode at initialization
 | Mode | Description |
 |---|---|
 | `venture-client` | The organization buys or pilots solutions from external startups. Focus: scouting, evaluation, and pilots. |
-| `venture-building` | The organization builds new ventures internally or with founders-in-residence. Focus: problem validation, team formation, and spin-off. |
-| `hybrid` | Combines both: scouts external solutions while incubating internal ventures in parallel. |
 
 The mode determines which phases, templates, and metrics are active for a given program.
 
@@ -91,7 +89,7 @@ Define program parameters: mode, team, governance, success metrics, and organiza
 Identify, validate, and publish problem statements. Each challenge is scoped to an organization or unit and has a defined owner.
 
 ### Phase 3 — Scouting
-Source solvers through structured methods: inbound applications, proactive outreach, partner referrals, or internal ideation (for venture-building mode).
+Source solvers through structured methods: inbound applications, proactive outreach, or partner referrals.
 
 ### Phase 4 — Evaluation
 Assess solver-challenge fit using a defined scoring framework. Output: a ranked list of candidates with a recommendation (advance, hold, reject).

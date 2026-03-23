@@ -260,7 +260,7 @@ to open or reprioritize challenges for the next cycle.
 |---|---|
 | Program | [program-slug] |
 | Batch | [batch-slug or — (full program)] |
-| Mode | [venture-client / venture-building / hybrid] |
+| Mode | venture-client |
 | Period | [period] |
 | Audience | [audience] |
 | Generated | [YYYY-MM-DD] |

@@ -68,7 +68,7 @@ Ask for the following in a single message:
 Batch setup — manual entry
 
 1. Batch name (e.g., "Cohort 2026-Q1" or "Spring Edition")
-2. Mode: venture-client / venture-building / hybrid
+2. Mode: venture-client
    (leave blank to inherit from parent program: [inherited mode])
 3. Description (1–3 sentences — purpose or focus of this cohort)
 4. Start date (YYYY-MM-DD or approximate)
@@ -194,7 +194,7 @@ Use this template:
 | Slug | [batch-slug] |
 | Type | batch |
 | Parent | [program-slug] |
-| Mode | [venture-client / venture-building / hybrid / inherited from [program-slug]] |
+| Mode | [venture-client / inherited from [program-slug]] |
 | Status | active |
 | Created | [YYYY-MM-DD] |
 
